@@ -54,7 +54,58 @@ exports.signin = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.oAuth = catchAsync(async (req, res, next) => {
+  // the majority of the work for the OAuth is made through the firebase SDK provided by google on the client side
+  const { name, email, profilePicture } = req.body;
+  const validUser = await User.findOne({ email });
+  if (validUser) {
+    // if the user auth via Oauth is in the database
+    return res
+      .status(202)
+      .cookie("amineBlog", signToken(validUser._id), {
+        httpOnly: true,
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      })
+      .json({
+        status: "success",
+        result: validUser,
+      });
+  } else {
+    // if the user does not exist => We need to create an account for him
+    const password = generateRandomPassword(); //generate a random password
+    const confirmPassword = password;
+    const newUser = await User.create({
+      name,
+      email,
+      profilePicture,
+      password,
+      confirmPassword,
+    });
+    return res
+      .status(202)
+      .cookie("amineBlog", signToken(newUser._id), {
+        httpOnly: true,
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      })
+      .json({
+        status: "success",
+        result: newUser,
+      });
+  }
+});
+
 // Functions
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.SECRET_JWT_KEY);
+};
+
+const generateRandomPassword = () => {
+  const charset =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+  for (let i = 0; i < 12; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
+  }
+  return password;
 };

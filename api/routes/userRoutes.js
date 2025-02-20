@@ -9,6 +9,7 @@ router.post("/signup", authController.signup);
 router.post("/signin", authController.signin);
 router.post("/oauth", authController.oAuth);
 router.get("/signout", authController.signOut);
+router.get("/verify", authController.verifyAccount);
 
 // To protect routes
 // router.use(authController.protect);

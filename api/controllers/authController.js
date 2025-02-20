@@ -2,6 +2,8 @@ const User = require("./../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { transporter } = require("./../utils/email");
+const nodemailer = require("nodemailer");
 
 exports.protect = catchAsync(async (req, res, next) => {
   const token = req.cookies.amineBlog;
@@ -10,20 +12,28 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
+  // /!\ Need to send an email to the person in order to confirm the email adress of the user
   const { name, email, password, confirmPassword } = req.body;
+  // new user write the credentials
+  // we generate a random unique String and attaached to the new document created
+  const uniqueString = generateRandomString();
   const newUser = await User.create({
     name,
     email,
     password,
     confirmPassword,
+    uniqueString,
   });
   newUser.password = undefined;
-
-  // /!\ Need to send an email to the person in order to confirm the email adress of the user
+  // we send an email to the provided mail adress containing the adress /verify?uniqueString:uniqueString&id:idXXX
+  sendMailConfirmation(email, name, uniqueString);
 
   return res.status(201).json({
     status: "success",
-    result: newUser,
+    result: {
+      message: "uncofirmed",
+      action: "Check your email to confirm your account",
+    },
   });
 });
 
@@ -109,6 +119,39 @@ exports.signOut = (req, res) => {
     .json({ status: "success", message: "logged Out successfully!" });
 };
 
+exports.verifyAccount = catchAsync(async (req, res) => {
+  // once we got a got that id and uniqueString from params (we check if the uniqueString is the same as we have in the database => If yes we make isValid to true)
+  // we return a confirmed status and we send the client to the sign in page we send the token ...
+  const { uniqueString, mail } = req.query;
+  const unConfirmedUser = await User.findOne({ email: mail });
+  if (!unConfirmedUser) {
+    return res.status(404).json({
+      status: "fail",
+      message: "User not found!",
+    });
+  }
+  //check if the account is already confirmed
+  if (unConfirmedUser.isValid)
+    return res
+      .status(400)
+      .json({ status: "fail", message: "Account already verified" });
+
+  // if the user exist alread
+  // the make isValid to true : account verified
+  unConfirmedUser.isValid = true;
+  unConfirmedUser.confirmPassword = unConfirmedUser.password;
+  await unConfirmedUser.save();
+  res.status(202).json({
+    status: "success",
+    message: "confirmed",
+    result: {
+      name: unConfirmedUser.name,
+      email: unConfirmedUser.email,
+      profilePicture: unConfirmedUser.profilePicture,
+    },
+  });
+});
+
 // Functions
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.SECRET_JWT_KEY);
@@ -123,4 +166,30 @@ const generateRandomPassword = () => {
     password += charset[randomIndex];
   }
   return password;
+};
+
+const generateRandomString = () => {
+  const charset =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+  for (let i = 0; i < 12; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
+  }
+  return password;
+};
+
+const sendMailConfirmation = async (newUserMail, newUserName, uniqueString) => {
+  const info = await transporter.sendMail({
+    from: '"Cde xxx 👻" <cade.kautzer97@ethereal.email>',
+    to: newUserMail, // list of receivers
+    subject: `Welcome ${newUserName}! (Email Adress Confirmation)`, // Subject line
+    text: `unique String ${uniqueString}`, // plain text body
+    html: `<h1>Welcome ${newUserName}</h1>
+      <p>Please visit this link to confirm your account.<br/>Do not share this Link with anyone</p>
+      <a href=http://localhost:3000/api/v1/users/verify?uniqueString=${uniqueString}&mail=${newUserMail}>Link</a>
+    `,
+    // html: "<b>Hello world?</b>", // html body
+  });
+  console.log(info);
 };

@@ -47,6 +47,13 @@ const userSchema = new mongoose.Schema(
         message: "Passwords are not the same",
       },
     },
+    isValid: {
+      type: Boolean,
+      default: false,
+    },
+    uniqueString: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

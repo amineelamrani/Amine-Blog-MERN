@@ -8,5 +8,11 @@ const router = express.Router();
 router.post("/signup", authController.signup);
 router.post("/signin", authController.signin);
 router.post("/oauth", authController.oAuth);
+router.get("/signout", authController.signOut);
+
+// To protect routes
+// router.use(authController.protect);
+
+// protected routes
 
 module.exports = router;

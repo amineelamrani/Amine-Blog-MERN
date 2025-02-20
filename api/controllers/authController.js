@@ -3,6 +3,12 @@ const catchAsync = require("./../utils/catchAsync");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+exports.protect = catchAsync(async (req, res, next) => {
+  const token = req.cookies.amineBlog;
+  req.userId = jwt.verify(token, process.env.SECRET_JWT_KEY).id;
+  next();
+});
+
 exports.signup = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword } = req.body;
   const newUser = await User.create({
@@ -23,7 +29,6 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.signin = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(password);
   if (!email || !password) {
     return res.status(400).json({
       status: "fail",
@@ -93,6 +98,16 @@ exports.oAuth = catchAsync(async (req, res, next) => {
       });
   }
 });
+
+exports.signOut = (req, res) => {
+  res.cookie("amineBlog", "loggedout", {
+    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+  });
+  res
+    .status(200)
+    .json({ status: "success", message: "logged Out successfully!" });
+};
 
 // Functions
 const signToken = (id) => {

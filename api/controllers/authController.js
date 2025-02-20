@@ -184,7 +184,7 @@ const generateRandomString = () => {
 
 const sendMailConfirmation = async (newUserMail, newUserName, uniqueString) => {
   const info = await transporter.sendMail({
-    from: '"Cde xxx 👻" <cade.kautzer97@ethereal.email>',
+    from: `${process.env.NODE_MAIL}`,
     to: newUserMail, // list of receivers
     subject: `Welcome ${newUserName}! (Email Adress Confirmation)`, // Subject line
     text: `unique String ${uniqueString}`, // plain text body
@@ -194,5 +194,4 @@ const sendMailConfirmation = async (newUserMail, newUserName, uniqueString) => {
     `,
     // html: "<b>Hello world?</b>", // html body
   });
-  console.log(info);
 };

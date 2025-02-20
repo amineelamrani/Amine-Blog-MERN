@@ -46,8 +46,10 @@ exports.signin = catchAsync(async (req, res, next) => {
     });
   }
   const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({ result: "fail", message: "User Not Found!" });
+  if (!user || !user.isValid) {
+    return res
+      .status(400)
+      .json({ result: "fail", message: "User Not Found or not confirmed" });
   }
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) {
@@ -95,6 +97,7 @@ exports.oAuth = catchAsync(async (req, res, next) => {
       profilePicture,
       password,
       confirmPassword,
+      isValid: true,
     });
     return res
       .status(202)

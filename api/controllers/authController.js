@@ -289,7 +289,7 @@ const sendResetMail = async (email, resetToken) => {
     html: `<h1>Hello!</h1>
       <p>Please visit this link to reset your password.<br/>It is valid for only 1hour! Do not share this Link with anyone!!</p>
       <p>Here is your reset Token</br>${resetToken}</p>
-      <a href=http://localhost:3000/api/v1/users/resetPassword/${email}/${resetToken}>Link</a>
+      
     `,
   });
 };

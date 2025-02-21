@@ -122,7 +122,7 @@ exports.signOut = (req, res) => {
     .json({ status: "success", message: "logged Out successfully!" });
 };
 
-exports.verifyAccount = catchAsync(async (req, res) => {
+exports.verifyAccount = catchAsync(async (req, res, next) => {
   // once we got a got that id and uniqueString from params (we check if the uniqueString is the same as we have in the database => If yes we make isValid to true)
   // we return a confirmed status and we send the client to the sign in page we send the token ...
   const { uniqueString, mail } = req.query;
@@ -155,6 +155,80 @@ exports.verifyAccount = catchAsync(async (req, res) => {
   });
 });
 
+exports.forgetPassword = catchAsync(async (req, res, next) => {
+  // check if the user exist
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return res
+      .status(400)
+      .json({ result: "fail", message: "User Not Found or not confirmed" });
+  }
+  // generate a random String 25
+  const resetToken = generateRandomResetToken();
+  // crypt it -> Store it in  token
+  // token will be the content of passwordResetToken + set passwordResetExpires to now + 1hour
+  user.passwordResetToken = signToken(resetToken);
+  user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+  user.confirmPassword = user.password;
+  await user.save();
+
+  // Send an email containing resetPassword/:token (the token not crypted and not hashed);
+  sendResetMail(req.body.email, resetToken);
+  res.status(200).json({
+    status: "success",
+    message: "Token sent to email!",
+  });
+});
+
+// Reset need some raffinement not like that the logic is fucked up here
+// what to do instead => send the token in the mail only / when we do the thing we have to send the mail & token from the front end in params && password in the req.body in the POST request
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  // /!\ For the reset endpoint from the front end we have to send email(no need to make the user rewrite it again) and token(parsed manually) in the params && password on the req.body from an imput for example
+
+  // got the token
+  const { email, token } = req.params;
+  // find the user
+  const user = await User.findOne({ email });
+  // verify if the resetoken stored is the same as the one in the url
+  if (
+    jwt.verify(user.passwordResetToken, process.env.SECRET_JWT_KEY).id === token
+  ) {
+    // if yes check if the now is less than the expires date
+    if (user.passwordResetExpires > Date.now()) {
+      // if this is valid -> Change the password
+      user.password = req.body.password;
+      user.confirmPassword = req.body.confirmPassword;
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+      await user.save();
+
+      return res
+        .status(200)
+        .cookie("amineBlog", signToken(user._id), {
+          httpOnly: true,
+          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        })
+        .json({
+          status: "success",
+          result: user,
+        });
+    } else {
+      return res.status(404).json({
+        status: "fail",
+        message: "Reset token is expired",
+      });
+    }
+  }
+
+  res.status(400).json({
+    status: "fail",
+    message: "You can not allowed to reset the password",
+  });
+  // hash it using the same method
+
+  // if yes create the new password & confirmation password & save the new password & send the cookie that contain token loging
+});
+
 // Functions
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.SECRET_JWT_KEY);
@@ -182,6 +256,17 @@ const generateRandomString = () => {
   return password;
 };
 
+const generateRandomResetToken = () => {
+  const charset =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+  for (let i = 0; i < 25; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
+  }
+  return password;
+};
+
 const sendMailConfirmation = async (newUserMail, newUserName, uniqueString) => {
   const info = await transporter.sendMail({
     from: `${process.env.NODE_MAIL}`,
@@ -193,5 +278,18 @@ const sendMailConfirmation = async (newUserMail, newUserName, uniqueString) => {
       <a href=http://localhost:3000/api/v1/users/verify?uniqueString=${uniqueString}&mail=${newUserMail}>Link</a>
     `,
     // html: "<b>Hello world?</b>", // html body
+  });
+};
+
+const sendResetMail = async (email, resetToken) => {
+  const info = await transporter.sendMail({
+    from: `${process.env.NODE_MAIL}`,
+    to: email, // list of receivers
+    subject: `Resetting Password `, // Subject line
+    html: `<h1>Hello!</h1>
+      <p>Please visit this link to reset your password.<br/>It is valid for only 1hour! Do not share this Link with anyone!!</p>
+      <p>Here is your reset Token</br>${resetToken}</p>
+      <a href=http://localhost:3000/api/v1/users/resetPassword/${email}/${resetToken}>Link</a>
+    `,
   });
 };

@@ -144,15 +144,21 @@ exports.verifyAccount = catchAsync(async (req, res, next) => {
   unConfirmedUser.isValid = true;
   unConfirmedUser.confirmPassword = unConfirmedUser.password;
   await unConfirmedUser.save();
-  res.status(202).json({
-    status: "success",
-    message: "confirmed",
-    result: {
-      name: unConfirmedUser.name,
-      email: unConfirmedUser.email,
-      profilePicture: unConfirmedUser.profilePicture,
-    },
-  });
+  res
+    .status(202)
+    .cookie("amineBlog", signToken(unConfirmedUser._id), {
+      httpOnly: true,
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    })
+    .json({
+      status: "success",
+      message: "confirmed",
+      result: {
+        name: unConfirmedUser.name,
+        email: unConfirmedUser.email,
+        profilePicture: unConfirmedUser.profilePicture,
+      },
+    });
 });
 
 exports.forgetPassword = catchAsync(async (req, res, next) => {

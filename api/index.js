@@ -17,9 +17,6 @@ mongoose
   .connect(DB)
   .then(() => console.log("Database connection successful!!"));
 
-// Global middlewares
-app.use(cors());
-
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -31,7 +28,7 @@ app.use(express.json());
 app.use("/api/v1/users", userRouter);
 
 // Server Starting
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });

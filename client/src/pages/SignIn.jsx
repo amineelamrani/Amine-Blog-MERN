@@ -12,7 +12,7 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     // Again the cookies cant see them in the application
     e.preventDefault();
-    const response = await fetch("http://localhost:3000/api/v1/users/signin", {
+    const response = await fetch("/api/v1/users/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,17 +23,18 @@ export default function SignIn() {
     console.log(data);
   };
 
-  const fetchData = async (dataToFetch) => {
-    const response = await fetch("http://localhost:3000/api/v1/users/signin", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(dataToFetch),
-    });
-    const data = await response.json();
-    console.log(data);
-  };
+  // const fetchData = async (dataToFetch) => {
+  //   const response = await fetch("http://localhost:3000/api/v1/users/signin", {
+  //     method: "POST",
+
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify(dataToFetch),
+  //   });
+  //   const data = await response.json();
+  //   console.log(data);
+  // };
 
   const handleChange = (e) => {
     setInputData((values) => ({ ...values, [e.target.name]: e.target.value }));

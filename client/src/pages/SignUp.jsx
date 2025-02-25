@@ -2,6 +2,13 @@ import { Link, useNavigate } from "react-router";
 import OAuth from "../components/OAuth";
 import { useState } from "react";
 import WarningComponent from "../components/WarningComponent";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  createAccountSuccess,
+  signInFailed,
+  startAuth,
+  startTyping,
+} from "../redux/user/userSlice";
 
 export default function SignUp() {
   // Managing States
@@ -11,52 +18,31 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
   });
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({ error: false, message: "" });
+  const { isLoading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   let navigate = useNavigate();
 
   // Functions
   const handleSubmit = async (e) => {
-    // Again the cookies cant see them in the application
     e.preventDefault();
     if (inputData.confirmPassword !== inputData.password) {
-      setIsLoading(true);
-      setError({
-        error: true,
-        message: "Passwords are not identical",
-      });
+      dispatch(signInFailed("Passwords are not identical"));
       return;
     }
 
     try {
       const dataReceived = await fetchData(inputData);
-      setIsLoading(true);
+      dispatch(startAuth());
       if (dataReceived && dataReceived.status === "success") {
-        // loading false / error false / setCurrentUser / redirect to Home page
-        // const data = {
-        //   email: dataReceived.result.email,
-        //   name: dataReceived.result.name,
-        //   profilePicture: dataReceived.result.profilePicture,
-        // };
-        setError(false);
-        // setCurrentUser(data);
-        setIsLoading(false);
-        navigate(`/account-confirmation/${inputData.email}`); //when account created successfully -> Redirect to confirmation page and send the unique string (if account validated directly log him in)
+        dispatch(createAccountSuccess());
+
+        navigate(`/account-confirmation/${inputData.email}`);
       } else if (dataReceived.status === "fail") {
-        setError({
-          error: true,
-          message: dataReceived.message,
-        });
-        setIsLoading(true);
+        dispatch(signInFailed(dataReceived.message));
       }
     } catch (err) {
-      setError({
-        error: true,
-        message: "Unexpected Error happened, Please Sign In again",
-      });
-      setIsLoading(true);
+      dispatch(signInFailed("Unexpected Error happened, Please Sign In again"));
     }
   };
 
@@ -74,7 +60,7 @@ export default function SignUp() {
   };
 
   const handleChange = (e) => {
-    setIsLoading(false);
+    dispatch(startTyping());
     setInputData((values) => ({ ...values, [e.target.name]: e.target.value }));
   };
 

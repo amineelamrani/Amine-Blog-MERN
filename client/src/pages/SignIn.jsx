@@ -2,6 +2,13 @@ import { Link, useNavigate } from "react-router";
 import OAuth from "../components/OAuth";
 import { useState } from "react";
 import WarningComponent from "../components/WarningComponent";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  signInDone,
+  signInFailed,
+  startAuth,
+  startTyping,
+} from "../redux/user/userSlice";
 
 export default function SignIn() {
   // Managing States
@@ -9,43 +16,30 @@ export default function SignIn() {
     email: "",
     password: "",
   });
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({ error: false, message: "" });
+  const { currentUser, isLoading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   let navigate = useNavigate();
 
   // Functions
   const handleSubmit = async (e) => {
-    // Again the cookies cant see them in the application
     e.preventDefault();
     try {
       const dataReceived = await fetchData(inputData);
-      setIsLoading(true);
+      dispatch(startAuth());
       if (dataReceived && dataReceived.status === "success") {
-        // loading false / error false / setCurrentUser / redirect to Home page
         const data = {
           email: dataReceived.result.email,
           name: dataReceived.result.name,
           profilePicture: dataReceived.result.profilePicture,
         };
-        setError(false);
-        setCurrentUser(data);
-        setIsLoading(false);
+        dispatch(signInDone(data));
         navigate("/");
       } else if (dataReceived.status === "fail") {
-        setError({
-          error: true,
-          message: dataReceived.message,
-        });
-        setIsLoading(true);
+        dispatch(signInFailed(dataReceived.message));
       }
     } catch (err) {
-      setError({
-        error: true,
-        message: "Unexpected Error happened, Please Sign In again",
-      });
-      setIsLoading(true);
+      dispatch(signInFailed("Unexpected Error happened, Please Sign In again"));
     }
   };
 
@@ -63,7 +57,7 @@ export default function SignIn() {
   };
 
   const handleChange = (e) => {
-    setIsLoading(false);
+    dispatch(startTyping());
     setInputData((values) => ({ ...values, [e.target.name]: e.target.value }));
   };
 

@@ -49,13 +49,13 @@ exports.signin = catchAsync(async (req, res, next) => {
   if (!user || !user.isValid) {
     return res
       .status(400)
-      .json({ result: "fail", message: "User Not Found or not confirmed" });
+      .json({ status: "fail", message: "User Not Found or not confirmed" });
   }
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) {
     return res
       .status(400)
-      .json({ result: "fail", message: "email or password is invalid" });
+      .json({ status: "fail", message: "email or password is invalid" });
   }
   user.password = undefined;
 

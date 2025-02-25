@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Header from "./components/Header";
 import SideDrawer from "./components/SideDrawer";
 import Footer from "./components/Footer";
+import ConfirmAccount from "./pages/ConfirmAccount";
 
 export default function App() {
   return (
@@ -22,6 +23,10 @@ export default function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/account-confirmation/:email"
+            element={<ConfirmAccount />}
+          />
         </Routes>
       </div>
       <Footer />

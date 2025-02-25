@@ -1,6 +1,7 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import OAuth from "../components/OAuth";
 import { useState } from "react";
+import WarningComponent from "../components/WarningComponent";
 
 export default function SignIn() {
   // Managing States
@@ -8,41 +9,68 @@ export default function SignIn() {
     email: "",
     password: "",
   });
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState({ error: false, message: "" });
 
+  let navigate = useNavigate();
+
+  // Functions
   const handleSubmit = async (e) => {
     // Again the cookies cant see them in the application
     e.preventDefault();
+    try {
+      const dataReceived = await fetchData(inputData);
+      setIsLoading(true);
+      if (dataReceived && dataReceived.status === "success") {
+        // loading false / error false / setCurrentUser / redirect to Home page
+        const data = {
+          email: dataReceived.result.email,
+          name: dataReceived.result.name,
+          profilePicture: dataReceived.result.profilePicture,
+        };
+        setError(false);
+        setCurrentUser(data);
+        setIsLoading(false);
+        navigate("/");
+      } else if (dataReceived.status === "fail") {
+        setError({
+          error: true,
+          message: dataReceived.message,
+        });
+        setIsLoading(true);
+      }
+    } catch (err) {
+      setError({
+        error: true,
+        message: "Unexpected Error happened, Please Sign In again",
+      });
+      setIsLoading(true);
+    }
+  };
+
+  const fetchData = async (dataToFetch) => {
     const response = await fetch("/api/v1/users/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(inputData),
+      body: JSON.stringify(dataToFetch),
     });
     const data = await response.json();
     console.log(data);
+    return data;
   };
 
-  // const fetchData = async (dataToFetch) => {
-  //   const response = await fetch("http://localhost:3000/api/v1/users/signin", {
-  //     method: "POST",
-
-  //     headers: {
-  //       "content-type": "application/json",
-  //     },
-  //     body: JSON.stringify(dataToFetch),
-  //   });
-  //   const data = await response.json();
-  //   console.log(data);
-  // };
-
   const handleChange = (e) => {
+    setIsLoading(false);
     setInputData((values) => ({ ...values, [e.target.name]: e.target.value }));
   };
 
   return (
     <div className="flex flex-col py-14 items-center gap-5 min-w-96 mx-auto w-fit">
       <div className="flex flex-col items-center gap-3 p-10 border border-neutral">
+        {error.error && <WarningComponent text={error.message} />}
         <h1 className="text-3xl ">Amine&apos;s Code Chronicles</h1>
         <p className="text-center">
           Unlock the Future of Tech - Dive into Amine&apos;s Code Chronicles and
@@ -94,8 +122,16 @@ export default function SignIn() {
               required
             />
           </label>
-          <button className="btn btn-primary" type="submit">
-            Log In
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={isLoading ? true : false}
+          >
+            {isLoading ? (
+              <span className="loading loading-dots loading-xs"></span>
+            ) : (
+              "Log In"
+            )}
           </button>
         </form>
         <OAuth />

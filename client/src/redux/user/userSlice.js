@@ -12,6 +12,7 @@ export const userSlice = createSlice({
   reducers: {
     startAuth: (state) => {
       state.isLoading = true;
+      state.error = { error: false, message: "" };
     },
     signInDone: (state, action) => {
       state.error = { error: false, message: "" };

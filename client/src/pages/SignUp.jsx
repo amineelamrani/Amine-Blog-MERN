@@ -36,7 +36,6 @@ export default function SignUp() {
       dispatch(startAuth());
       if (dataReceived && dataReceived.status === "success") {
         dispatch(createAccountSuccess());
-
         navigate(`/account-confirmation/${inputData.email}`);
       } else if (dataReceived.status === "fail") {
         dispatch(signInFailed(dataReceived.message));

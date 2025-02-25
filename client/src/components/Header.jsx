@@ -3,9 +3,11 @@ import blogIcon from "./../../public/edit-svgrepo-com.svg";
 import blogIconDark from "./../../public/edit-svgrepo-com_dark.svg";
 import ThemeSwitch from "./ThemeSwitch";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const [currentTheme, setCurrentTheme] = useState("light");
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleThemeSwap = (e) => {
     setCurrentTheme(() => {
@@ -37,16 +39,29 @@ export default function Header() {
 
       <div className="flex gap-2 items-center">
         <ThemeSwitch handleThemeSwap={handleThemeSwap} />
-        <Link to="/sign-in">
-          <button className="btn btn-sm px-5 text-xs md:text-base">
-            Log in
-          </button>
-        </Link>
-        <Link to="/sign-up">
-          <button className="btn btn-sm px-5 btn-primary text-xs md:text-base">
-            Sign up
-          </button>
-        </Link>
+        {currentUser === null && (
+          <>
+            <Link to="/sign-in">
+              <button className="btn btn-sm px-5 text-xs md:text-base">
+                Log in
+              </button>
+            </Link>
+            <Link to="/sign-up">
+              <button className="btn btn-sm px-5 btn-primary text-xs md:text-base">
+                Sign up
+              </button>
+            </Link>
+          </>
+        )}
+        {currentUser !== null && (
+          <div className="avatar online ">
+            <div className="w-6  bg-white ring-primary ring-offset-base-100 rounded-full ring ring-offset-2">
+              <Link to="/profile">
+                <img src={currentUser.profilePicture} />
+              </Link>
+            </div>
+          </div>
+        )}
 
         <div className="drawer-content flex md:hidden">
           {/* Page content here */}

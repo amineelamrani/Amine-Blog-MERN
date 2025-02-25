@@ -281,7 +281,8 @@ const sendMailConfirmation = async (newUserMail, newUserName, uniqueString) => {
     text: `unique String ${uniqueString}`, // plain text body
     html: `<h1>Welcome ${newUserName}</h1>
       <p>Please visit this link to confirm your account.<br/>Do not share this Link with anyone</p>
-      <a href=http://localhost:3000/api/v1/users/verify?uniqueString=${uniqueString}&mail=${newUserMail}>Link</a>
+      <p>Your Unique String : </p>
+      <p><samp>${uniqueString}</samp></p>
     `,
     // html: "<b>Hello world?</b>", // html body
   });

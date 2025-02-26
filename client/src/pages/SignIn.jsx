@@ -52,7 +52,6 @@ export default function SignIn() {
       body: JSON.stringify(dataToFetch),
     });
     const data = await response.json();
-    console.log(data);
     return data;
   };
 

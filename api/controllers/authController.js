@@ -141,6 +141,12 @@ exports.verifyAccount = catchAsync(async (req, res, next) => {
 
   // if the user exist alread
   // the make isValid to true : account verified
+  if (uniqueString !== unConfirmedUser.uniqueString) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Wrong code provided! please check the inbox code sent to you",
+    });
+  }
   unConfirmedUser.isValid = true;
   unConfirmedUser.confirmPassword = unConfirmedUser.password;
   await unConfirmedUser.save();
@@ -167,7 +173,7 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   if (!user) {
     return res
       .status(400)
-      .json({ result: "fail", message: "User Not Found or not confirmed" });
+      .json({ status: "fail", message: "User Not Found or not confirmed" });
   }
   // generate a random String 25
   const resetToken = generateRandomResetToken();

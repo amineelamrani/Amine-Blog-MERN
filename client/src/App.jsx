@@ -12,6 +12,7 @@ import ConfirmAccount from "./pages/ConfirmAccount";
 import ResetPassword from "./pages/ResetPassword";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import Profile from "./pages/Profile";
 
 export default function App() {
   const { theme } = useSelector((state) => state.user);
@@ -25,6 +26,7 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
           <Route path="/search" element={<Search />} />
           <Route path="/sign-in" element={<SignIn />} />

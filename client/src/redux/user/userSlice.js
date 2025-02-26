@@ -37,6 +37,11 @@ export const userSlice = createSlice({
     storeTheme: (state, action) => {
       state.theme = action.payload;
     },
+    signOut: (state) => {
+      state.currentUser = null;
+      state.isLoading = false;
+      state.error = { error: false, message: "" };
+    },
   },
 });
 
@@ -47,6 +52,7 @@ export const {
   startTyping,
   createAccountSuccess,
   storeTheme,
+  signOut,
 } = userSlice.actions;
 
 export default userSlice.reducer;

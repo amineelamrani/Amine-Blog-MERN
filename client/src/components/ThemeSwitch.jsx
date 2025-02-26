@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux";
+
 export default function ThemeSwitch({ handleThemeSwap }) {
+  const { theme } = useSelector((state) => state.user);
+
   return (
     <label className="swap swap-rotate pt-1">
       {/* this hidden checkbox controls the state */}
@@ -6,7 +10,8 @@ export default function ThemeSwitch({ handleThemeSwap }) {
         type="checkbox"
         className="theme-controller"
         value="dark"
-        onClick={handleThemeSwap}
+        onChange={handleThemeSwap}
+        checked={theme === "dark" ? true : false}
       />
 
       {/* sun icon */}

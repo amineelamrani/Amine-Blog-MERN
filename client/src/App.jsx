@@ -10,8 +10,14 @@ import SideDrawer from "./components/SideDrawer";
 import Footer from "./components/Footer";
 import ConfirmAccount from "./pages/ConfirmAccount";
 import ResetPassword from "./pages/ResetPassword";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function App() {
+  const { theme } = useSelector((state) => state.user);
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
   return (
     <BrowserRouter>
       <SideDrawer />

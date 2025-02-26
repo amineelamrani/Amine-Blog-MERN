@@ -4,6 +4,7 @@ const initialState = {
   currentUser: null,
   isLoading: false,
   error: { error: false, message: "" },
+  theme: "light",
 };
 
 export const userSlice = createSlice({
@@ -33,6 +34,9 @@ export const userSlice = createSlice({
       state.error = { error: false, message: "" };
       state.isLoading = false;
     },
+    storeTheme: (state, action) => {
+      state.theme = action.payload;
+    },
   },
 });
 
@@ -42,6 +46,7 @@ export const {
   signInFailed,
   startTyping,
   createAccountSuccess,
+  storeTheme,
 } = userSlice.actions;
 
 export default userSlice.reducer;

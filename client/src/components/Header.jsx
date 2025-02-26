@@ -2,17 +2,16 @@ import { Link } from "react-router";
 import blogIcon from "./../../public/edit-svgrepo-com.svg";
 import blogIconDark from "./../../public/edit-svgrepo-com_dark.svg";
 import ThemeSwitch from "./ThemeSwitch";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { storeTheme } from "../redux/user/userSlice";
 
 export default function Header() {
-  const [currentTheme, setCurrentTheme] = useState("light");
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, theme } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const handleThemeSwap = (e) => {
-    setCurrentTheme(() => {
-      return e.target.checked ? "dark" : "light";
-    });
+    const themeChecked = e.target.checked ? "dark" : "light";
+    dispatch(storeTheme(themeChecked));
   };
 
   return (
@@ -20,7 +19,7 @@ export default function Header() {
       <Link to="/">
         <div className="flex gap-1 items-center">
           <img
-            src={currentTheme === "dark" ? blogIconDark : blogIcon}
+            src={theme === "dark" ? blogIconDark : blogIcon}
             alt="icon-blog"
             className="w-8"
           />

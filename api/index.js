@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const userRouter = require("./routes/userRoutes");
+const articleRouter = require("./routes/articleRoutes");
 
 // Start express App
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/articles", articleRouter);
 
 // Server Starting
 const port = process.env.PORT;

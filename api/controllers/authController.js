@@ -11,6 +11,23 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.adminRestricted = catchAsync(async (req, res, next) => {
+  const token = req.cookies.amineBlog;
+  const id = jwt.verify(token, process.env.SECRET_JWT_KEY).id;
+  const checkAdmin = await User.findById(id);
+  if (!checkAdmin || !checkAdmin.admin) {
+    return res.status(400).json({
+      status: "fail",
+      message: "You are not allowed! for admin only!!",
+    });
+  }
+
+  if (checkAdmin.admin) {
+    req.userIdAdm = id;
+    next();
+  }
+});
+
 exports.signup = catchAsync(async (req, res, next) => {
   // /!\ Need to send an email to the person in order to confirm the email adress of the user
   const { name, email, password, confirmPassword } = req.body;

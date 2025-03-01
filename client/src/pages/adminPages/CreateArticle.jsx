@@ -1,10 +1,8 @@
-import { useSelector } from "react-redux";
 import MarkdownInputField from "../../components/MarkdownInputField";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function CreateArticle() {
-  const { isLoading } = useSelector((state) => state.user);
   const [inputData, setInputData] = useState({
     title: "",
     category: "",
@@ -13,6 +11,13 @@ export default function CreateArticle() {
     content: "",
   });
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const [isLoading, setIsLoading] = useState({
+    isloading: false,
+    message: "",
+  });
+  const [error, setError] = useState({ error: false, message: "" });
+
   let navigate = useNavigate();
 
   //Cloudinary infos
@@ -25,9 +30,13 @@ export default function CreateArticle() {
     // Check if image selected
     if (!selectedFile) {
       console.log("there is an error");
-      return;
+      return setError({ error: true, message: "There is no file selected" });
     }
     // upload to cloudinary
+    setIsLoading({
+      isloading: true,
+      message: "Uploading the image to cloudianry...",
+    });
     const imageUrl = await handleUploadCloudinary(
       cloudName,
       uploadPreset,
@@ -35,6 +44,12 @@ export default function CreateArticle() {
     );
     // if uploaded successfully => Send article infos to the server
     if (imageUrl) {
+      setError({ error: false, message: "" });
+      setIsLoading({
+        isloading: true,
+        message: "Uploading article data to the server...",
+      });
+
       const articleCreate = await fetchCreateArticle({
         title: inputData.title,
         content: inputData.content,
@@ -44,6 +59,11 @@ export default function CreateArticle() {
       });
       console.log(articleCreate);
       if (articleCreate && articleCreate.status === "success") {
+        setError({ error: false, message: "" });
+        setIsLoading({
+          isloading: false,
+          message: "",
+        });
         // reset errors and loading and go to the article page -> To see the uploaded version on the front end
         navigate("/");
       }
@@ -83,14 +103,26 @@ export default function CreateArticle() {
   };
 
   const handleChange = (e) => {
+    setIsLoading({
+      isloading: false,
+      message: "",
+    });
     setInputData((values) => ({ ...values, [e.target.name]: e.target.value }));
   };
 
   const handleMarkdownChange = (e) => {
+    setIsLoading({
+      isloading: false,
+      message: "",
+    });
     setInputData((values) => ({ ...values, ["content"]: e }));
   };
 
   const handleFileChange = (e) => {
+    setIsLoading({
+      isloading: false,
+      message: "",
+    });
     const file = e.target.files[0];
     if (file) {
       if (file.type.startsWith("image/")) {
@@ -101,6 +133,36 @@ export default function CreateArticle() {
 
   return (
     <div className="flex flex-col py-14 items-center gap-5 min-w-96 mx-auto w-full">
+      {error.error && (
+        <div className="toast z-50">
+          <div className="alert alert-error">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <span>{error.message} </span>
+          </div>
+        </div>
+      )}
+
+      {isLoading.isloading && (
+        <div className="toast toast-top toast-center z-50">
+          <div className="alert alert-warning">
+            <span className="loading loading-spinner loading-xs"></span>
+            <span>{isLoading.message}</span>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold">
         Create Article{" "}
         <span className="text-primary">(This is for Admin Only)</span>
@@ -183,9 +245,9 @@ export default function CreateArticle() {
         <button
           className="btn btn-primary px-24"
           type="submit"
-          disabled={isLoading ? true : false}
+          disabled={isLoading.isloading ? true : false}
         >
-          {isLoading ? (
+          {isLoading.isloading ? (
             <span className="loading loading-dots loading-xs"></span>
           ) : (
             "Create Article"

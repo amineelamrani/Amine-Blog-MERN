@@ -24,9 +24,25 @@ exports.adminRestricted = catchAsync(async (req, res, next) => {
 
   if (checkAdmin.admin) {
     req.userIdAdm = id;
+    console.log(req.userIdAdm);
     next();
   }
 });
+
+exports.checkAdminRight = (req, res) => {
+  console.log(req.userIdAdm);
+  if (req.userIdAdm) {
+    return res.status(200).json({
+      status: "success",
+      message: "Admin Right granted",
+    });
+  } else {
+    return res.status(400).json({
+      status: "fail",
+      message: "Not allowed to access! for admin only",
+    });
+  }
+};
 
 exports.signup = catchAsync(async (req, res, next) => {
   // /!\ Need to send an email to the person in order to confirm the email adress of the user

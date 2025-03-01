@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
 import ProtectedRoutes from "./components/utils/ProtectedRoutes";
 import CreateArticle from "./pages/adminPages/CreateArticle";
+import AdminRestricted from "./components/utils/AdminRestricted";
 
 export default function App() {
   const { theme } = useSelector((state) => state.user);
@@ -29,8 +30,12 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
+          </Route>
+
+          <Route element={<AdminRestricted />}>
             <Route path="article">
               <Route path="create" element={<CreateArticle />}></Route>
             </Route>

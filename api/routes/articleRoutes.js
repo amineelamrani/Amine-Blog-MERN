@@ -13,6 +13,7 @@ router.get("/:articleId", articleController.getArticle);
 router.use(authController.adminRestricted);
 
 //// create article by admin
+router.get("/check/checkAdmin", authController.checkAdminRight);
 router.post("/create", articleController.newArticle);
 router.delete("/delete/:articleId", articleController.deleteArticle);
 

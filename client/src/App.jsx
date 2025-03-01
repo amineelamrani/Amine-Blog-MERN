@@ -13,12 +13,15 @@ import ResetPassword from "./pages/ResetPassword";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
+import ProtectedRoutes from "./components/utils/ProtectedRoutes";
+import CreateArticle from "./pages/adminPages/CreateArticle";
 
 export default function App() {
   const { theme } = useSelector((state) => state.user);
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
+
   return (
     <BrowserRouter>
       <SideDrawer />
@@ -26,7 +29,13 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="article">
+              <Route path="create" element={<CreateArticle />}></Route>
+            </Route>
+          </Route>
+
           <Route path="/about" element={<About />} />
           <Route path="/search" element={<Search />} />
           <Route path="/sign-in" element={<SignIn />} />

@@ -9,7 +9,7 @@ exports.newArticle = catchAsync(async (req, res, next) => {
     title,
     image,
     content,
-    author,
+    author: req.userIdAdm,
     category,
     summary,
   });

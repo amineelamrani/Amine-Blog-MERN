@@ -1,9 +1,7 @@
-import MDEditor, { selectWord } from "@uiw/react-md-editor";
-import { useState } from "react";
+import MDEditor, { commands } from "@uiw/react-md-editor";
 import { useSelector } from "react-redux";
 
-export default function MarkdownInputField() {
-  const [value, setValue] = useState("");
+export default function MarkdownInputField({ value, handleChange }) {
   const { theme } = useSelector((state) => state.user);
 
   return (
@@ -18,9 +16,11 @@ export default function MarkdownInputField() {
             <h1>Enter Article Content :</h1>
             <MDEditor
               preview="edit"
+              name="content"
               height={500}
               value={value}
-              onChange={setValue}
+              onChange={handleChange}
+              extraCommands={[commands.fullscreen]}
               textareaProps={{
                 placeholder: "Please enter Markdown text",
                 maxLength: 2500,
@@ -30,7 +30,13 @@ export default function MarkdownInputField() {
 
           <div className="flex flex-col gap-2 w-full lg:w-1/2">
             <h1>Article Preview</h1>
-            <MDEditor preview="preview" value={value} height={500} />
+            <MDEditor
+              preview="preview"
+              value={value}
+              height={500}
+              commands={[]}
+              extraCommands={[commands.fullscreen]}
+            />
           </div>
         </div>
       </div>

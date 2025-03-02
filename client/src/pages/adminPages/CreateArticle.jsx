@@ -65,7 +65,7 @@ export default function CreateArticle() {
           message: "",
         });
         // reset errors and loading and go to the article page -> To see the uploaded version on the front end
-        navigate("/");
+        navigate(`/article/read/${articleCreate.result._id}`);
       }
     }
   };

@@ -16,6 +16,7 @@ import Profile from "./pages/Profile";
 import ProtectedRoutes from "./components/utils/ProtectedRoutes";
 import CreateArticle from "./pages/adminPages/CreateArticle";
 import AdminRestricted from "./components/utils/AdminRestricted";
+import ReadArticle from "./pages/articlePages/ReadArticle";
 
 export default function App() {
   const { theme } = useSelector((state) => state.user);
@@ -30,6 +31,7 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/article/read/:articleId" element={<ReadArticle />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />

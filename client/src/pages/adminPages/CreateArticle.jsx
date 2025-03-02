@@ -1,6 +1,13 @@
 import MarkdownInputField from "../../components/MarkdownInputField";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import {
+  createArticleFailed,
+  startTyping,
+  startUploadArticle,
+  uploadsuccess,
+} from "../../redux/article/articleSlice";
 
 export default function CreateArticle() {
   const [inputData, setInputData] = useState({
@@ -12,11 +19,14 @@ export default function CreateArticle() {
   });
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const [isLoading, setIsLoading] = useState({
-    isloading: false,
-    message: "",
-  });
-  const [error, setError] = useState({ error: false, message: "" });
+  const { isLoading, error } = useSelector((state) => state.article);
+  const dispatch = useDispatch();
+
+  // const [isLoading, setIsLoading] = useState({
+  //   isloading: false,
+  //   message: "",
+  // });
+  // const [error, setError] = useState({ error: false, message: "" });
 
   let navigate = useNavigate();
 
@@ -30,13 +40,15 @@ export default function CreateArticle() {
     // Check if image selected
     if (!selectedFile) {
       console.log("there is an error");
-      return setError({ error: true, message: "There is no file selected" });
+      return dispatch(createArticleFailed("There is no file selected"));
+      // return setError({ error: true, message: "There is no file selected" });
     }
     // upload to cloudinary
-    setIsLoading({
-      isloading: true,
-      message: "Uploading the image to cloudianry...",
-    });
+    // setIsLoading({
+    //   isloading: true,
+    //   message: "Uploading the image to cloudianry...",
+    // });
+    dispatch(startUploadArticle("Uploading the image to cloudianry..."));
     const imageUrl = await handleUploadCloudinary(
       cloudName,
       uploadPreset,
@@ -44,29 +56,44 @@ export default function CreateArticle() {
     );
     // if uploaded successfully => Send article infos to the server
     if (imageUrl) {
-      setError({ error: false, message: "" });
-      setIsLoading({
-        isloading: true,
-        message: "Uploading article data to the server...",
-      });
-
+      dispatch(startUploadArticle("Uploading article data to the server..."));
+      // setError({ error: false, message: "" });
+      // setIsLoading({
+      //   isloading: true,
+      //   message: "Uploading article data to the server...",
+      // });
+      const cat = inputData.category
+        .trim()
+        .split(" ")
+        .filter((el) => el != "");
       const articleCreate = await fetchCreateArticle({
         title: inputData.title,
         content: inputData.content,
         summary: inputData.summary,
-        category: inputData.category.trim().split(" "),
+        category: cat,
         image: imageUrl,
       });
       console.log(articleCreate);
       if (articleCreate && articleCreate.status === "success") {
-        setError({ error: false, message: "" });
-        setIsLoading({
-          isloading: false,
-          message: "",
-        });
+        dispatch(uploadsuccess());
+        // setError({ error: false, message: "" });
+        // setIsLoading({
+        //   isloading: false,
+        //   message: "",
+        // });
         // reset errors and loading and go to the article page -> To see the uploaded version on the front end
         navigate(`/article/read/${articleCreate.result._id}`);
       }
+    } else {
+      dispatch(
+        createArticleFailed(
+          "An error happened while uploading to cloudinary server"
+        )
+      );
+      // setError({
+      //   error: true,
+      //   message: "An error happened while uploading to cloudinary server",
+      // });
     }
   };
 
@@ -103,26 +130,29 @@ export default function CreateArticle() {
   };
 
   const handleChange = (e) => {
-    setIsLoading({
-      isloading: false,
-      message: "",
-    });
+    // setIsLoading({
+    //   isloading: false,
+    //   message: "",
+    // });
+    dispatch(startTyping());
     setInputData((values) => ({ ...values, [e.target.name]: e.target.value }));
   };
 
   const handleMarkdownChange = (e) => {
-    setIsLoading({
-      isloading: false,
-      message: "",
-    });
+    // setIsLoading({
+    //   isloading: false,
+    //   message: "",
+    // });
+    dispatch(startTyping());
     setInputData((values) => ({ ...values, ["content"]: e }));
   };
 
   const handleFileChange = (e) => {
-    setIsLoading({
-      isloading: false,
-      message: "",
-    });
+    // setIsLoading({
+    //   isloading: false,
+    //   message: "",
+    // });
+    dispatch(startTyping());
     const file = e.target.files[0];
     if (file) {
       if (file.type.startsWith("image/")) {

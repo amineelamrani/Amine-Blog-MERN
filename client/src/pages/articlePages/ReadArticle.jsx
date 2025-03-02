@@ -78,6 +78,16 @@ export default function ReadArticle() {
             {/* Now I have a content as a markdown and need to translate it to html */}
             <Markdown>{articleData.content}</Markdown>
           </div>
+          <div id="author-like-section">
+            author section and like the article section
+          </div>
+          <div id="article-comments-section">
+            here the list of the article comments
+          </div>
+          <div id="recent-articles-section">
+            here a list of the 3 recent articles or articles with the same
+            category (we will see)
+          </div>
         </div>
       )}
     </div>

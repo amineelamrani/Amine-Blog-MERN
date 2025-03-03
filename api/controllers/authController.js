@@ -7,7 +7,18 @@ const nodemailer = require("nodemailer");
 
 exports.protect = catchAsync(async (req, res, next) => {
   const token = req.cookies.amineBlog;
-  req.userId = jwt.verify(token, process.env.SECRET_JWT_KEY).id;
+  const id = jwt.verify(token, process.env.SECRET_JWT_KEY).id;
+  const checkUser = await User.findById(id);
+
+  if (!checkUser || !checkUser.isValid) {
+    return res.status(404).json({
+      status: "fail",
+      message: "You are not allowed! for Auth users only",
+    });
+  }
+
+  req.userId = id;
+
   next();
 });
 

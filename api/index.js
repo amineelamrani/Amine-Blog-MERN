@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const userRouter = require("./routes/userRoutes");
 const articleRouter = require("./routes/articleRoutes");
+const commentRouter = require("./routes/commentRoutes");
 
 // Start express App
 const app = express();
@@ -28,6 +29,7 @@ app.use(express.json());
 // Routes
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/articles", articleRouter);
+app.use("/api/v1/comments", commentRouter);
 
 // Server Starting
 const port = process.env.PORT;

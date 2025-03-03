@@ -8,6 +8,9 @@ const router = express.Router();
 router.get("/:articleId", articleController.getArticle);
 
 // Routes for authenticated users
+router.use(authController.protect);
+
+router.post("/:articleId/add/comment", articleController.addArticleComment);
 
 // Routes Restricted to admin
 router.use(authController.adminRestricted);

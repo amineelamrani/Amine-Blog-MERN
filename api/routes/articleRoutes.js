@@ -4,19 +4,19 @@ const articleController = require("./../controllers/articleController");
 
 const router = express.Router();
 
-// Open Public Routes
+////// Open Public Routes
 router.get("/:articleId", articleController.getArticle);
+router.get("/:articleId/comments", articleController.getArticleComments);
 
-// Routes for authenticated users
+////// Routes for authenticated users
 router.use(authController.protect);
 
 router.post("/:articleId/add/comment", articleController.addArticleComment);
 router.post("/:articleId/add/like", articleController.addArticleLike);
 
-// Routes Restricted to admin
+////// Routes Restricted to admin
 router.use(authController.adminRestricted);
 
-//// create article by admin
 router.get("/check/checkAdmin", authController.checkAdminRight);
 router.post("/create", articleController.newArticle);
 router.delete("/delete/:articleId", articleController.deleteArticle);

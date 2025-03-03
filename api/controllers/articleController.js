@@ -77,6 +77,7 @@ exports.addArticleComment = catchAsync(async (req, res, next) => {
   });
 });
 
+// Add Like to the specified article
 exports.addArticleLike = catchAsync(async (req, res, next) => {
   const articleId = req.params.articleId;
   // when liking
@@ -103,5 +104,21 @@ exports.addArticleLike = catchAsync(async (req, res, next) => {
       article: likedArticle,
       user: likingUser,
     },
+  });
+});
+
+// Got the comments of a specific article
+exports.getArticleComments = catchAsync(async (req, res, next) => {
+  const articleId = req.params.articleId;
+  const articleComments = await Comment.find({ articleId });
+  if (!articleComments) {
+    return res.status(400).json({
+      status: "fail",
+      message: "an error happened",
+    });
+  }
+  return res.status(202).json({
+    status: "success",
+    result: articleComments,
   });
 });

@@ -11,6 +11,7 @@ router.get("/:articleId", articleController.getArticle);
 router.use(authController.protect);
 
 router.post("/:articleId/add/comment", articleController.addArticleComment);
+router.post("/:articleId/add/like", articleController.addArticleLike);
 
 // Routes Restricted to admin
 router.use(authController.adminRestricted);

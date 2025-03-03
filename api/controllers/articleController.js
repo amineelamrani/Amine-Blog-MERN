@@ -59,11 +59,6 @@ exports.deleteArticle = catchAsync(async (req, res, next) => {
 
 // Add comment to the specified article
 exports.addArticleComment = catchAsync(async (req, res, next) => {
-  // Got the article id
-  // got the owner name
-  // search for the user data (by owner name)
-  // Update the comment data {content - articleId - owner (id) - ownerName - ownerPicture}
-  // put them in the database
   const articleId = req.params.articleId;
   const { content } = req.body;
   const commentingUser = await User.findById(req.userId);
@@ -79,5 +74,34 @@ exports.addArticleComment = catchAsync(async (req, res, next) => {
   return res.status(202).json({
     status: "success",
     result: addedComment,
+  });
+});
+
+exports.addArticleLike = catchAsync(async (req, res, next) => {
+  const articleId = req.params.articleId;
+  // when liking
+  // in the User model    => add the articleId to the array of likedArticles
+  const likingUser = await User.findById(req.userId);
+  if (likingUser.likedArticles.includes(articleId)) {
+    return res.status(403).json({
+      status: "fail",
+      message: "already liked this article",
+    });
+  }
+  const likedArticle = await Article.findById(articleId);
+  likingUser.likedArticles.push(articleId);
+
+  // in the Article model => add +1 to the timesLiked item
+  likedArticle.timesLiked++;
+
+  await likingUser.save();
+  await likedArticle.save();
+
+  return res.status(200).json({
+    status: "success",
+    result: {
+      article: likedArticle,
+      user: likingUser,
+    },
   });
 });

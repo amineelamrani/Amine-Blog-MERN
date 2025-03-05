@@ -2,9 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import MDEditor from "@uiw/react-md-editor";
 import Markdown from "react-markdown";
+import ArticleCommentsSections from "../../components/ArticleCommentsSections";
+import whiteLike from "/white_like.svg";
+import darkLike from "/dark_like.svg";
+import { useSelector } from "react-redux";
 
 export default function ReadArticle() {
   const [articleData, setArticleData] = useState(null);
+  const { theme } = useSelector((state) => state.user);
   let params = useParams();
   const articleId = params.articleId;
   const badgeTypes = ["neutral", "primary", "secondary", "accent"];
@@ -34,7 +39,12 @@ export default function ReadArticle() {
         <div className="flex flex-col mx-auto w-full items-center py-14 lg:px-24">
           <div id="header-section" className="flex flex-col gap-3 items-center">
             <h3 className="text-primary font-bold">
-              Published {articleData.createdAt}
+              Published{" "}
+              {new Date(articleData.createdAt)
+                .toDateString()
+                .split(" ")
+                .slice(1)
+                .join(" ")}
             </h3>
             <h1 className="text-4xl font-bold text-center px-10">
               {articleData.title}
@@ -74,19 +84,26 @@ export default function ReadArticle() {
             </div>
           </div>
 
-          <div id="article-content" className=" prose max-w-none">
+          <div
+            id="article-content"
+            className=" prose max-w-none border-b-2 border-neutral py-10"
+          >
             {/* Now I have a content as a markdown and need to translate it to html */}
             <Markdown>{articleData.content}</Markdown>
           </div>
-          <div id="author-like-section">
-            author section and like the article section
-          </div>
-          <div id="article-comments-section">
-            here the list of the article comments
-          </div>
-          <div id="recent-articles-section">
-            here a list of the 3 recent articles or articles with the same
-            category (we will see)
+
+          <ArticleCommentsSections articleId={articleId} />
+
+          <div
+            id="recent-articles-section"
+            className="flex flex-col items-center w-full gap-5"
+          >
+            <h1 className="text-2xl">Recent Articles</h1>
+
+            <div>
+              here a list of the 3 recent articles or articles with the same
+              category (we will see)
+            </div>
           </div>
         </div>
       )}

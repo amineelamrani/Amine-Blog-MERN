@@ -12,7 +12,12 @@ export default function ReadArticle() {
   const { theme } = useSelector((state) => state.user);
   let params = useParams();
   const articleId = params.articleId;
-  const badgeTypes = ["neutral", "primary", "secondary", "accent"];
+  const badgeTypes = [
+    "badge-neutral",
+    "badge-primary",
+    "badge-secondary",
+    "badge-accent",
+  ];
 
   useEffect(() => {
     // fetch data about the article
@@ -55,7 +60,7 @@ export default function ReadArticle() {
             <div className="flex gap-2">
               {articleData.category.map((element, index) => (
                 <div
-                  className={`badge badge-${badgeTypes[index % 4]}`}
+                  className={`badge ${badgeTypes[index % 4]}`}
                   key={index + 10000}
                 >
                   {element}

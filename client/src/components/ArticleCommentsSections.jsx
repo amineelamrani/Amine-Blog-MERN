@@ -30,7 +30,7 @@ export default function ArticleCommentsSections({ articleId, userId }) {
   return (
     <div
       id="article-comments-section"
-      className="flex flex-col gap-5 w-full lg:px-32 py-5"
+      className="flex flex-col gap-5 w-full lg:px-14 py-5"
     >
       {currentUser === null && (
         <h1 className="text-info">

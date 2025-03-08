@@ -51,7 +51,7 @@ export default function ArticleAuthorSection({
   return (
     <>
       {author.name && (
-        <div className="flex justify-between gap-5 w-full px-5 lg:px-32 py-5 border-t-2 border-b-2">
+        <div className="flex justify-between gap-5 w-full px-5 lg:px-14 py-5 border-t-2 border-b-2">
           <div className="flex gap-2 items-center">
             <img
               src={author.profilePicture}

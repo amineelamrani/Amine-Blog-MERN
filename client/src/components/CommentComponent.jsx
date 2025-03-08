@@ -1,14 +1,51 @@
-import whiteLike from "/white_like.svg";
-import darkLike from "/dark_like.svg";
+import whiteBorderLike from "/likeSVGs/like-border-white.svg";
+import blackBorderLike from "/likeSVGs/like-border-black.svg";
+import blackFullLike from "/likeSVGs/like-full-black.svg";
+import whiteFullLike from "/likeSVGs/like-full-white.svg";
+
 import {
   differenceInDays,
   differenceInHours,
   differenceInMonths,
 } from "date-fns";
+import { useState } from "react";
 
-export default function CommentComponent({ comment, theme }) {
+export default function CommentComponent({
+  comment,
+  theme,
+  userId,
+  currentUser,
+}) {
   const creationDate = new Date(comment.createdAt);
   const daysDifference = differenceInDays(Date.now(), creationDate);
+  const [liked, setLiked] = useState(false);
+
+  const handleCommentLikeClick = async () => {
+    if (currentUser === null) {
+      // we need to have a popup here saying that you need to be logged in
+      console.log("You must be logged it to like the article");
+      return;
+    }
+    try {
+      const res = await fetch(`/api/v1/comments/${comment._id}/add/like`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      // console.log(data);
+      if (data.status === "success") {
+        console.log("Article Liked successfully");
+        comment.likedBy.push(userId);
+        setLiked(true);
+      } else {
+        console.log(data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="flex w-full gap-4 items-start py-5 border-b-2 border-neutral">
@@ -35,11 +72,21 @@ export default function CommentComponent({ comment, theme }) {
         </div>
         <p className="py-2">{comment.content}</p>
         <div className="flex items-center gap-1">
-          <img
-            src={theme === "dark" ? whiteLike : darkLike}
-            alt=""
-            className="w-8"
-          />
+          {comment.likedBy.includes(userId) && (
+            <img
+              src={theme === "dark" ? whiteFullLike : blackFullLike}
+              alt=""
+              className="w-8"
+            />
+          )}
+          {!comment.likedBy.includes(userId) && (
+            <img
+              src={theme === "dark" ? whiteBorderLike : blackBorderLike}
+              alt=""
+              className="w-8 hover:cursor-pointer"
+              onClick={handleCommentLikeClick}
+            />
+          )}
           <p>{comment.likedBy.length} like</p>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import AddCommentSection from "./AddCommentSection";
 
-export default function ArticleCommentsSections({ articleId }) {
+export default function ArticleCommentsSections({ articleId, userId }) {
   const [commentsFetched, setCommentsFetched] = useState(null);
   const { theme, currentUser } = useSelector((state) => state.user);
   const [inputData, setInputData] = useState("");
@@ -59,7 +59,13 @@ export default function ArticleCommentsSections({ articleId }) {
 
           <div className="px-10">
             {commentsFetched.map((element, index) => (
-              <CommentComponent comment={element} key={index} theme={theme} />
+              <CommentComponent
+                comment={element}
+                key={index}
+                theme={theme}
+                userId={userId}
+                currentUser={currentUser}
+              />
             ))}
           </div>
         </>

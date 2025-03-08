@@ -136,11 +136,13 @@ exports.checkLiked = catchAsync(async (req, res, next) => {
   if (!userConcerned.likedArticles.includes(articleId)) {
     return res.status(404).json({
       status: "fail",
+      user: req.userId,
       message: "Article Not liked",
     });
   }
   return res.status(200).json({
     status: "success",
+    user: req.userId,
     message: "Article liked",
   });
 });

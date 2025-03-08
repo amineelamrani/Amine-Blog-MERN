@@ -8,6 +8,7 @@ import ArticleAuthorSection from "../../components/ArticleAuthorSection";
 export default function ReadArticle() {
   const [articleData, setArticleData] = useState(null);
   const [isArticleLiked, setIsArticleLiked] = useState(false);
+  const [userId, setUserId] = useState(null);
   const { theme } = useSelector((state) => state.user);
   let params = useParams();
   const articleId = params.articleId;
@@ -49,8 +50,10 @@ export default function ReadArticle() {
       });
       const data = await res.json();
       if (data && data.status === "success") {
+        setUserId(data.user);
         setIsArticleLiked(true);
       } else {
+        setUserId(data.user);
         setIsArticleLiked(false);
       }
     };
@@ -115,7 +118,7 @@ export default function ReadArticle() {
             setIsArticleLiked={setIsArticleLiked}
           />
 
-          <ArticleCommentsSections articleId={articleId} />
+          <ArticleCommentsSections articleId={articleId} userId={userId} />
 
           <div
             id="recent-articles-section"

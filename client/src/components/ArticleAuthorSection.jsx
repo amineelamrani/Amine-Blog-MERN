@@ -76,7 +76,7 @@ export default function ArticleAuthorSection({
               <img
                 src={theme === "dark" ? whiteFullLike : blackFullLike}
                 alt=""
-                className="w-8 hover:cursor-pointer"
+                className="w-8 "
               />
             )}
             <button className="btn" onClick={handleCopyText}>

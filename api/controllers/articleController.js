@@ -30,7 +30,7 @@ exports.newArticle = catchAsync(async (req, res, next) => {
 // Get Article by ID
 exports.getArticle = catchAsync(async (req, res, next) => {
   const queryArticle = await Article.findById(req.params.articleId)
-    .populate("author", "name")
+    .populate("author", "name profilePicture")
     .exec();
   if (!queryArticle) {
     return res.status(400).json({
@@ -120,5 +120,27 @@ exports.getArticleComments = catchAsync(async (req, res, next) => {
   return res.status(202).json({
     status: "success",
     result: articleComments,
+  });
+});
+
+// Check if the user has already liked the article
+exports.checkLiked = catchAsync(async (req, res, next) => {
+  const articleId = req.params.articleId;
+  const userConcerned = await User.findById(req.userId);
+  if (!userConcerned) {
+    return res.status(400).json({
+      status: "fail",
+      message: "An error happened while trying to access the server",
+    });
+  }
+  if (!userConcerned.likedArticles.includes(articleId)) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Article Not liked",
+    });
+  }
+  return res.status(200).json({
+    status: "success",
+    message: "Article liked",
   });
 });

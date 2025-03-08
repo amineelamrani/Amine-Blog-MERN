@@ -11,6 +11,7 @@ router.get("/:articleId/comments", articleController.getArticleComments);
 ////// Routes for authenticated users
 router.use(authController.protect);
 
+router.get("/:articleId/checkLiked", articleController.checkLiked);
 router.post("/:articleId/add/comment", articleController.addArticleComment);
 router.post("/:articleId/add/like", articleController.addArticleLike);
 

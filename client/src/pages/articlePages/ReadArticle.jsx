@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import MDEditor from "@uiw/react-md-editor";
 import Markdown from "react-markdown";
 import ArticleCommentsSections from "../../components/ArticleCommentsSections";
-import whiteLike from "/white_like.svg";
-import darkLike from "/dark_like.svg";
 import { useSelector } from "react-redux";
+import ArticleAuthorSection from "../../components/ArticleAuthorSection";
 
 export default function ReadArticle() {
   const [articleData, setArticleData] = useState(null);
+  const [isArticleLiked, setIsArticleLiked] = useState(false);
   const { theme } = useSelector((state) => state.user);
   let params = useParams();
   const articleId = params.articleId;
@@ -32,6 +31,27 @@ export default function ReadArticle() {
       const data = await res.json();
       if (data && data.status === "success") {
         setArticleData(data.result);
+      }
+    };
+
+    fetchData(articleId);
+  }, [isArticleLiked]);
+
+  useEffect(() => {
+    // this to fetch if the user is already liking the article
+    // to add a backend endpoint to check if the article is liked by the currentUser
+    const fetchData = async (id) => {
+      const res = await fetch(`/api/v1/articles/${id}/checkLiked`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (data && data.status === "success") {
+        setIsArticleLiked(true);
+      } else {
+        setIsArticleLiked(false);
       }
     };
 
@@ -71,31 +91,29 @@ export default function ReadArticle() {
 
           <div id="cover-image" className="mx-auto mt-14 relative">
             <img src={articleData.image} alt="" className="" />
-            <div className="absolute top-2 right-2 bg-transparent flex flex-row items-center text-red-600">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block h-8 w-8 stroke-current hover:cursor-pointer"
+            <div className="absolute left-6 -bottom-7">
+              <h1
+                className={`text-${
+                  theme === "dark" ? "white" : "black"
+                } font-bold text-xl`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                ></path>
-              </svg>
-              <div className="stat-value">{articleData.timesLiked}</div>
+                👋 Liked by {articleData.timesLiked} person
+                {articleData.timesLiked > 1 && "s"}
+              </h1>
             </div>
           </div>
 
-          <div
-            id="article-content"
-            className=" prose max-w-none border-b-2 border-neutral py-10"
-          >
+          <div id="article-content" className=" prose max-w-none py-10">
             {/* Now I have a content as a markdown and need to translate it to html */}
             <Markdown>{articleData.content}</Markdown>
           </div>
+
+          <ArticleAuthorSection
+            articleId={articleId}
+            author={articleData.author}
+            isArticleLiked={isArticleLiked}
+            setIsArticleLiked={setIsArticleLiked}
+          />
 
           <ArticleCommentsSections articleId={articleId} />
 

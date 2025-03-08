@@ -45,6 +45,45 @@ exports.getArticle = catchAsync(async (req, res, next) => {
   });
 });
 
+// Get articles 6
+exports.getArticles = catchAsync(async (req, res, next) => {
+  const { page, limit } = req.query;
+  let queryArticles = null;
+  if (page && limit) {
+    queryArticles = await Article.find()
+      .select("-content")
+      .sort("-createdAt")
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate("author", "name profilePicture")
+      .exec();
+  } else if (limit) {
+    queryArticles = await Article.find()
+      .sort("-createdAt")
+      .limit(limit)
+      .populate("author", "name profilePicture")
+      .exec();
+  } else {
+    queryArticles = await Article.find()
+      .sort("-createdAt")
+      .limit(7)
+      .populate("author", "name profilePicture")
+      .exec();
+  }
+  // queryArticles;
+
+  if (!queryArticles) {
+    return res.status(400).json({
+      status: "fail",
+      message: "No article with the provided Id",
+    });
+  }
+  res.status(202).json({
+    status: "success",
+    result: queryArticles,
+  });
+});
+
 // delete article by ID
 exports.deleteArticle = catchAsync(async (req, res, next) => {
   const deletingArticle = await Article.findByIdAndDelete(req.params.articleId);

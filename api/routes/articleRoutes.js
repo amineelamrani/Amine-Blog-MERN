@@ -5,6 +5,7 @@ const articleController = require("./../controllers/articleController");
 const router = express.Router();
 
 ////// Open Public Routes
+router.get("/", articleController.getArticles);
 router.get("/:articleId", articleController.getArticle);
 router.get("/:articleId/comments", articleController.getArticleComments);
 

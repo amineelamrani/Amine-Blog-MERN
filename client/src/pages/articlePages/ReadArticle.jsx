@@ -11,6 +11,7 @@ export default function ReadArticle() {
   const [isArticleLiked, setIsArticleLiked] = useState(false);
   const [userId, setUserId] = useState(null);
   const { theme } = useSelector((state) => state.user);
+  const { error } = useSelector((state) => state.comment);
   let params = useParams();
   const articleId = params.articleId;
   const badgeTypes = [
@@ -19,6 +20,10 @@ export default function ReadArticle() {
     "badge-secondary",
     "badge-accent",
   ];
+  useEffect(() => {
+    // this to got back when going from route to route with the same ancestor
+    document.documentElement.scrollTo(0, 0);
+  }, [articleId]);
 
   useEffect(() => {
     // fetch data about the article
@@ -37,7 +42,7 @@ export default function ReadArticle() {
     };
 
     fetchData(articleId);
-  }, [isArticleLiked]);
+  }, [isArticleLiked, articleId]);
 
   useEffect(() => {
     // this to fetch if the user is already liking the article
@@ -60,12 +65,38 @@ export default function ReadArticle() {
     };
 
     fetchData(articleId);
-  }, []);
+  }, [articleId]);
 
   return (
     <div className="container">
+      {!articleData && (
+        <div className="flex w-full mx-auto text-center">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
       {articleData && (
         <div className="flex flex-col mx-auto w-full items-center py-14 lg:px-24">
+          {error.error && (
+            <div className="toast z-50">
+              <div className="alert alert-error">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 shrink-0 stroke-current"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <span>{error.message} </span>
+              </div>
+            </div>
+          )}
+
           <div id="header-section" className="flex flex-col gap-3 items-center">
             <h3 className="text-primary font-bold">
               Published{" "}

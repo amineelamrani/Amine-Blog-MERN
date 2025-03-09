@@ -10,6 +10,10 @@ export default function ArticleCommentsSections({ articleId, userId }) {
   const [inputData, setInputData] = useState("");
   const [updateComment, setUpdateComment] = useState(true);
 
+  let commentsPlaceContent = (
+    <span className="loading loading-dots loading-lg"></span>
+  );
+
   useEffect(() => {
     const fetchData = async (articleId) => {
       const comments = await fetch(`/api/v1/articles/${articleId}/comments`, {
@@ -25,7 +29,21 @@ export default function ArticleCommentsSections({ articleId, userId }) {
     };
 
     fetchData(articleId);
-  }, [updateComment]);
+  }, [updateComment, articleId]);
+
+  if (commentsFetched !== null) {
+    commentsPlaceContent = commentsFetched.map((element, index) => {
+      return (
+        <CommentComponent
+          comment={element}
+          key={index}
+          theme={theme}
+          userId={userId}
+          currentUser={currentUser}
+        />
+      );
+    });
+  }
 
   return (
     <div
@@ -57,17 +75,7 @@ export default function ArticleCommentsSections({ articleId, userId }) {
             <p className="border px-2">{commentsFetched.length}</p>
           </div>
 
-          <div className="px-10">
-            {commentsFetched.map((element, index) => (
-              <CommentComponent
-                comment={element}
-                key={index}
-                theme={theme}
-                userId={userId}
-                currentUser={currentUser}
-              />
-            ))}
-          </div>
+          <div className="px-10">{commentsPlaceContent}</div>
         </>
       )}
     </div>

@@ -70,7 +70,7 @@ export default function ReadArticle() {
   return (
     <div className="container">
       {!articleData && (
-        <div className="flex w-full mx-auto text-center">
+        <div className="flex w-full justify-center">
           <span className="loading loading-spinner loading-lg"></span>
         </div>
       )}

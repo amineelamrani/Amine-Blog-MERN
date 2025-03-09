@@ -2,6 +2,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { signOut } from "../redux/user/userSlice";
 
+// in the profile route => I will have
+// [signOut - delete account - Update name - update profile picture (delete the existing one) - Update Password - possibility to go to admin dashboard if admin on it ]
+
 export default function Profile() {
   const dispatch = useDispatch();
   let navigate = useNavigate();

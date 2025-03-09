@@ -62,9 +62,8 @@ export default function Header() {
           </div>
         )}
 
-        <div className="drawer-content flex md:hidden">
-          {/* Page content here */}
-          <label htmlFor="my-drawer-4" className="drawer-button">
+        <div className="dropdown dropdown-bottom dropdown-end md:hidden">
+          <div tabIndex={0}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -78,7 +77,22 @@ export default function Header() {
                 d="M4 6h16M4 12h16M4 18h16"
               ></path>
             </svg>
-          </label>
+          </div>
+
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-5 shadow"
+          >
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/search">Search</Link>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

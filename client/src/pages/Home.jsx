@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ArticleResultItemCard from "../components/ArticleResultItemCard";
 
 export default function Home() {
   const [fetchedArticles, setFetchedArticles] = useState(null);
   const [pageIndex, setPageIndex] = useState(1);
-  const [displayedItems, setDisplayedItems] = useState([]);
+  const buttonLoadRef = useRef(null);
 
-  // let displayedItems = [];
+  let displayedItems = [];
 
   useEffect(() => {
     const fetchData = async (page, limit) => {
@@ -20,8 +20,20 @@ export default function Home() {
       const data = await res.json();
 
       if (data && data.status === "success") {
-        // console.log(data);
-        setFetchedArticles(data.result);
+        if (data.result.length < 6) {
+          if (fetchedArticles !== null) {
+            let newArr = [...fetchedArticles].concat(data.result);
+            setFetchedArticles(newArr);
+            buttonLoadRef.current.disabled = true;
+            return;
+          }
+        }
+        if (fetchedArticles !== null) {
+          let newArr = [...fetchedArticles].concat(data.result);
+          setFetchedArticles(newArr);
+        } else {
+          setFetchedArticles(data.result);
+        }
       }
     };
     fetchData(pageIndex, 6);
@@ -33,25 +45,10 @@ export default function Home() {
   };
 
   if (fetchedArticles) {
-    for (let i = 0; i < fetchedArticles.length; i++) {
-      displayedItems.push(
-        <ArticleResultItemCard
-          article={fetchedArticles[i]}
-          key={fetchedArticles[i]._id}
-        />
-      );
-    }
+    displayedItems = fetchedArticles.map((article, index) => {
+      return <ArticleResultItemCard article={article} key={index} />;
+    });
   }
-  console.log(displayedItems);
-
-  // if (fetchedArticles) {
-  //   console.log(displayedItems);
-  //   displayedItems = fetchedArticles.map((article, index) => {
-  //     displayedItems.push(
-  //       <ArticleResultItemCard article={article} key={index} />
-  //     );
-  //   });
-  // }
 
   return (
     <>
@@ -81,15 +78,15 @@ export default function Home() {
                   clipRule="evenodd"
                 />
               </svg>
-              <input type="text" className="grow" placeholder="Search" />
+              <input
+                type="text"
+                className="grow"
+                placeholder="Search Articles..."
+              />
             </label>
           </div>
 
-          <div id="articles-section">
-            <div id="First-article-section" className="px-5">
-              <img src={fetchedArticles[0].image} alt="" />
-            </div>
-
+          <div id="articles-section" className="">
             <div
               id="articles-display-section"
               className="w-full flex flex-wrap py-5 items-stretch"
@@ -97,7 +94,13 @@ export default function Home() {
               {displayedItems}
             </div>
           </div>
-          <button onClick={handleClick}>Load More</button>
+          <button
+            onClick={handleClick}
+            ref={buttonLoadRef}
+            className="btn mx-auto mb-5"
+          >
+            <span className="text-xl font-black">&#11107;</span> Load More
+          </button>
         </div>
       )}
     </>

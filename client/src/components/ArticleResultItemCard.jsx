@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function ArticleResultItemCard({ article }) {
   let categories = <></>;
 
@@ -6,7 +8,7 @@ export default function ArticleResultItemCard({ article }) {
       if (index < 3) {
         return (
           <li key={index} className="badge badge-outline">
-            item
+            {item}
           </li>
         );
       }
@@ -18,12 +20,18 @@ export default function ArticleResultItemCard({ article }) {
       {article && (
         <div className="w-full md:w-1/2 lg:w-1/3 p-5">
           <div className="p-5 shadow-2xl flex flex-col gap-3 h-full">
-            <img src={article.image} alt="article image" className="" />
+            <Link to={`/article/read/${article._id}`}>
+              <img src={article.image} alt="article image" className="" />
+            </Link>
 
             <div className="flex flex-col justify-between h-full">
               <div className="flex flex-col gap-3">
                 <ul className="flex gap-1 flex-wrap">{categories}</ul>
-                <h1>{article.title}</h1>
+                <Link to={`/article/read/${article._id}`}>
+                  <h1 className="font-black text-xl capitalize">
+                    {article.title}
+                  </h1>
+                </Link>
                 <p>{article.summary}</p>
               </div>
 
@@ -35,13 +43,14 @@ export default function ArticleResultItemCard({ article }) {
                 />
                 <div className="">
                   <h2 className="text-lg font-bold">{article.author.name}</h2>
-                  <p>
+                  <p className="flex items-center gap-1">
                     {new Date(article.createdAt)
                       .toDateString()
                       .split(" ")
                       .slice(1)
                       .join(" ")}{" "}
-                    - {article.timesLiked} likes
+                    - {article.timesLiked}{" "}
+                    <span className="font-bold text-xl">&#9829;</span>
                   </p>
                 </div>
               </div>

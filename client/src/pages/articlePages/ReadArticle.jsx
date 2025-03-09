@@ -4,6 +4,7 @@ import Markdown from "react-markdown";
 import ArticleCommentsSections from "../../components/ArticleCommentsSections";
 import { useSelector } from "react-redux";
 import ArticleAuthorSection from "../../components/ArticleAuthorSection";
+import RecentArticlesSection from "../../components/RecentArticlesSection";
 
 export default function ReadArticle() {
   const [articleData, setArticleData] = useState(null);
@@ -74,7 +75,7 @@ export default function ReadArticle() {
                 .slice(1)
                 .join(" ")}
             </h3>
-            <h1 className="text-4xl font-bold text-center px-10">
+            <h1 className="text-4xl font-bold text-center px-10 capitalize">
               {articleData.title}
             </h1>
             <p className="text-center text-base-content">
@@ -120,17 +121,7 @@ export default function ReadArticle() {
 
           <ArticleCommentsSections articleId={articleId} userId={userId} />
 
-          <div
-            id="recent-articles-section"
-            className="flex flex-col items-center w-full gap-5"
-          >
-            <h1 className="text-2xl">Recent Articles</h1>
-
-            <div>
-              here a list of the 3 recent articles or articles with the same
-              category (we will see)
-            </div>
-          </div>
+          <RecentArticlesSection />
         </div>
       )}
     </div>

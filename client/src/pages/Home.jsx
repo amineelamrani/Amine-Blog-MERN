@@ -99,7 +99,8 @@ export default function Home() {
             ref={buttonLoadRef}
             className="btn mx-auto mb-5"
           >
-            <span className="text-xl font-black">&#11107;</span> Load More
+            <span className="text-xl font-black animate-bounce">&#11107;</span>{" "}
+            Load More
           </button>
         </div>
       )}

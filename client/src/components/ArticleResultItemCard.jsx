@@ -19,9 +19,15 @@ export default function ArticleResultItemCard({ article }) {
     <>
       {article && (
         <div className="w-full md:w-1/2 lg:w-1/3 p-5">
-          <div className="p-5 shadow-2xl flex flex-col gap-3 h-full">
+          <div className="p-5 shadow-2xl flex flex-col gap-3 h-full overflow-hidden">
             <Link to={`/article/read/${article._id}`}>
-              <img src={article.image} alt="article image" className="" />
+              <div className="overflow-hidden">
+                <img
+                  src={article.image}
+                  alt="article image"
+                  className="hover:scale-125 transition ease-in-out "
+                />
+              </div>
             </Link>
 
             <div className="flex flex-col justify-between h-full">
@@ -50,7 +56,7 @@ export default function ArticleResultItemCard({ article }) {
                       .slice(1)
                       .join(" ")}{" "}
                     - {article.timesLiked}{" "}
-                    <span className="font-bold text-xl">&#9829;</span>
+                    <span className="font-bold text-xl ">&#9829;</span>
                   </p>
                 </div>
               </div>

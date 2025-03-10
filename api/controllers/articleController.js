@@ -123,6 +123,7 @@ exports.addArticleLike = catchAsync(async (req, res, next) => {
   // in the User model    => add the articleId to the array of likedArticles
   const likingUser = await User.findById(req.userId);
   if (likingUser.likedArticles.includes(articleId)) {
+    console.log("here");
     return res.status(403).json({
       status: "fail",
       message: "already liked this article",
@@ -183,5 +184,41 @@ exports.checkLiked = catchAsync(async (req, res, next) => {
     status: "success",
     user: req.userId,
     message: "Article liked",
+  });
+});
+
+exports.searchArticles = catchAsync(async (req, res, next) => {
+  const { searchTerm, sort, category } = req.query;
+
+  let query = "";
+
+  if (!searchTerm || searchTerm.length === 0) {
+    query = Article.find({});
+  } else {
+    query = Article.find({ $text: { $search: searchTerm } });
+  }
+
+  if (category && category !== "uncategorized") {
+    query.where("category").in([category]);
+  }
+
+  if (sort === "latest") {
+    query.sort("-createdAt");
+  } else if (sort === "oldest") {
+    query.sort("createdAt");
+  }
+
+  query = await query.populate("author", "name profilePicture").exec();
+
+  if (!query) {
+    return res.status(404).json({
+      status: "fail",
+      result: "Not found any result",
+    });
+  }
+
+  return res.status(202).json({
+    status: "success",
+    result: query,
   });
 });

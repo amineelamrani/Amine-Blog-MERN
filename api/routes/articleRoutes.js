@@ -6,6 +6,7 @@ const router = express.Router();
 
 ////// Open Public Routes
 router.get("/", articleController.getArticles);
+router.get("/search", articleController.searchArticles);
 router.get("/:articleId", articleController.getArticle);
 router.get("/:articleId/comments", articleController.getArticleComments);
 

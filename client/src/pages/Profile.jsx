@@ -1,12 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import {
-  changeProfilePicture,
-  changeProfilePictureFail,
-  signInFailed,
-  signOut,
-  StartChangeProfilePicture,
-} from "../redux/user/userSlice";
+import { changeProfilePicture, signOut } from "../redux/user/userSlice";
 import ConfirmButtonCheck from "../components/svgComponents/ConfirmButtonCheck";
 import { useState } from "react";
 import ActionConfirmation from "../components/ActionConfirmation";
@@ -16,9 +10,10 @@ import ActionConfirmation from "../components/ActionConfirmation";
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const { currentUser, theme, isLoading, error } = useSelector(
-    (state) => state.user
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState({ error: false, message: "" });
+
+  const { currentUser, theme } = useSelector((state) => state.user);
   const [file, setFile] = useState(null);
   let navigate = useNavigate();
 
@@ -54,8 +49,12 @@ export default function Profile() {
     const data = await res.json();
     if (data && data.status === "success") {
       dispatch(changeProfilePicture(url));
+      setIsLoading(false);
+      setError({ error: false, message: "" });
     } else {
-      dispatch(changeProfilePictureFail());
+      // dispatch(changeProfilePictureFail());
+      setIsLoading(false);
+      setError({ error: true, message: "Failed to update profile picture" });
     }
   };
 
@@ -64,7 +63,9 @@ export default function Profile() {
       console.log("need a file");
       return;
     }
-    dispatch(StartChangeProfilePicture());
+    // dispatch(StartChangeProfilePicture());
+    setIsLoading(true);
+    setError({ error: false, message: "" });
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", uploadPreset);
@@ -78,7 +79,6 @@ export default function Profile() {
         }
       );
       const data = await response.json();
-      console.log(data);
       await fetchChangeProfilePicture(data.url);
       // dispatch(changeProfilePicture(data.url));
       // send request to the server to update the profile picture
@@ -103,7 +103,12 @@ export default function Profile() {
       }
     } catch (err) {
       console.log("oops there was an error :", err);
-      dispatch(signInFailed("Cannot delete the account! an eror happened"));
+      setIsLoading(false);
+      setError({
+        error: true,
+        message: "Cannot delete the account! an eror happened",
+      });
+      // dispatch(signInFailed("Cannot delete the account! an eror happened"));
     }
   };
 

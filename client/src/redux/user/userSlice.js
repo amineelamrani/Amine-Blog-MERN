@@ -42,6 +42,22 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = { error: false, message: "" };
     },
+    StartChangeProfilePicture: (state) => {
+      state.isLoading = true;
+      state.error = { error: false, message: "" };
+    },
+    changeProfilePicture: (state, action) => {
+      state.currentUser.profilePicture = action.payload;
+      state.isLoading = false;
+      state.error = { error: false, message: "" };
+    },
+    changeProfilePictureFail: (state) => {
+      state.error = {
+        error: true,
+        message: "Failed to update profile picture",
+      };
+      state.isLoading = false;
+    },
   },
 });
 
@@ -53,6 +69,9 @@ export const {
   createAccountSuccess,
   storeTheme,
   signOut,
+  changeProfilePicture,
+  StartChangeProfilePicture,
+  changeProfilePictureFail,
 } = userSlice.actions;
 
 export default userSlice.reducer;

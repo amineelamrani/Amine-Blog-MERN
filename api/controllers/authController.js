@@ -285,6 +285,20 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // if yes create the new password & confirmation password & save the new password & send the cookie that contain token loging
 });
 
+exports.deleteAccount = catchAsync(async (req, res, next) => {
+  await User.findByIdAndDelete(req.userId);
+  return res
+    .status(200)
+    .cookie("amineEstateUser", "deleted", {
+      expires: new Date(Date.now() + 3 * 1000),
+      httpOnly: true,
+    })
+    .json({
+      status: "success",
+      message: "Account deleted successfully",
+    });
+});
+
 // Functions
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.SECRET_JWT_KEY);

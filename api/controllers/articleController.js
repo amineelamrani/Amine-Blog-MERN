@@ -149,7 +149,9 @@ exports.addArticleLike = catchAsync(async (req, res, next) => {
 // Got the comments of a specific article
 exports.getArticleComments = catchAsync(async (req, res, next) => {
   const articleId = req.params.articleId;
-  const articleComments = await Comment.find({ articleId }).sort("-createdAt");
+  const articleComments = await Comment.find({ articleId })
+    .populate("owner", "name profilePicture")
+    .sort("-createdAt");
   if (!articleComments) {
     return res.status(400).json({
       status: "fail",

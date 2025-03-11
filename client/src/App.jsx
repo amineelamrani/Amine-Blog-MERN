@@ -47,14 +47,6 @@ export default function App() {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
-  // if (adminRight !== null) {
-  //     if (adminRight) {
-  //       dest = <Outlet />;
-  //     } else {
-  //       dest = <Navigate to="/sign-in" />;
-  //     }
-  //   }
-
   return (
     <BrowserRouter>
       <div className="container mx-auto px-10">

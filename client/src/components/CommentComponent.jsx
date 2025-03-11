@@ -50,11 +50,20 @@ export default function CommentComponent({
   return (
     <div className="flex w-full gap-4 items-start py-5 border-b-2 border-neutral">
       <div>
-        <img
-          src={comment.ownerPicture}
-          alt="comment"
-          className="w-12 h-12 rounded-full border border-black bg-white"
-        />
+        {comment.owner && (
+          <img
+            src={comment.owner.profilePicture}
+            alt="comment"
+            className="w-12 h-12 rounded-full border border-black bg-white"
+          />
+        )}
+        {!comment.owner && (
+          <img
+            src="https://img.icons8.com/?size=100&id=Ib9FADThtmSf&format=png&color=000000"
+            alt="comment"
+            className="w-12 h-12 rounded-full border border-black bg-white"
+          />
+        )}
       </div>
 
       <div className="flex flex-col">

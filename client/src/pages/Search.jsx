@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import ArticleResultItemCard from "../components/ArticleResultItemCard";
+import PaginationComponent from "../components/PaginationComponent";
 
-// /!\ To display only 6 articles and add pagination bro
+// /!\ To display only 6 articles and add pagination bro => This time do it in the client side (not like the home page)
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +16,7 @@ export default function Search() {
     category: searchParams.get("category") || "uncategorized",
     sort: searchParams.get("sort") || "latest",
   });
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +33,6 @@ export default function Search() {
           }
         );
         const data = await res.json();
-        console.log(data);
         if (data && data.status === "success") {
           setIsLoading(false);
           setError(false);
@@ -42,7 +43,6 @@ export default function Search() {
           setError(true);
         }
       } catch (err) {
-        console.log(err);
         setFetchedArticles(null);
         setIsLoading(false);
         setError(true);
@@ -53,8 +53,6 @@ export default function Search() {
   }, [go]);
 
   const handleChangeToggle = (e) => {
-    console.log(e.target.checked);
-    // setSearchData(e.target.checked ? "latest" : "oldest");
     setSearchData({
       ...searchData,
       ["sort"]: e.target.checked ? "latest" : "oldest",
@@ -130,7 +128,7 @@ export default function Search() {
                 setSearchData({ ...searchData, ["category"]: e.target.value })
               }
             >
-              <option value="uncategorised">Uncategorised</option>
+              <option value="uncategorized">Uncategorized</option>
               <option value="Testig">testig</option>
               <option value="Next.js">Next.js</option>
               <option value="React.js">React.js</option>
@@ -176,9 +174,23 @@ export default function Search() {
         <div className="w-full flex flex-wrap py-5 items-stretch">
           {fetchedArticles !== null &&
             fetchedArticles.map((article, index) => {
-              return <ArticleResultItemCard article={article} key={index} />;
+              const fromIncluded = (currentPage - 1) * 6;
+              const toExcluded = (currentPage - 1) * 6 + 6;
+              if (index >= fromIncluded && index < toExcluded) {
+                return <ArticleResultItemCard article={article} key={index} />;
+              }
             })}
         </div>
+
+        {fetchedArticles !== null && (
+          <div className="flex mx-auto">
+            <PaginationComponent
+              length={fetchedArticles.length}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

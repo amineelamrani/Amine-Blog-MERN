@@ -61,6 +61,7 @@ export default function Profile() {
   const handleUpload = async () => {
     if (!file) {
       console.log("need a file");
+      setError({ error: true, message: "You need to specify a File" });
       return;
     }
     // dispatch(StartChangeProfilePicture());

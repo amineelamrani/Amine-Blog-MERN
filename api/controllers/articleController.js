@@ -123,7 +123,6 @@ exports.addArticleLike = catchAsync(async (req, res, next) => {
   // in the User model    => add the articleId to the array of likedArticles
   const likingUser = await User.findById(req.userId);
   if (likingUser.likedArticles.includes(articleId)) {
-    console.log("here");
     return res.status(403).json({
       status: "fail",
       message: "already liked this article",

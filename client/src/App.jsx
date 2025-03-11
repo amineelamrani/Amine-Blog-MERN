@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Link } from "react-router";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Search from "./pages/Search";
@@ -9,23 +9,67 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ConfirmAccount from "./pages/ConfirmAccount";
 import ResetPassword from "./pages/ResetPassword";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
 import ProtectedRoutes from "./components/utils/ProtectedRoutes";
 import CreateArticle from "./pages/adminPages/CreateArticle";
 import AdminRestricted from "./components/utils/AdminRestricted";
 import ReadArticle from "./pages/articlePages/ReadArticle";
+import createWhite from "/create-article-white.svg";
+import createBlack from "/create-article-black.svg";
 
 export default function App() {
-  const { theme } = useSelector((state) => state.user);
+  const { theme, currentUser } = useSelector((state) => state.user);
+
+  const [adminRight, setAdminRight] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("/api/v1/articles/check/checkAdmin", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (data && data.status === "success") {
+        setAdminRight(true);
+        // return <Outlet />;
+      } else {
+        setAdminRight(false);
+      }
+    };
+
+    fetchData();
+  }, [currentUser]);
+
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
+  // if (adminRight !== null) {
+  //     if (adminRight) {
+  //       dest = <Outlet />;
+  //     } else {
+  //       dest = <Navigate to="/sign-in" />;
+  //     }
+  //   }
+
   return (
     <BrowserRouter>
       <div className="container mx-auto px-10">
+        {adminRight && (
+          <div className="toast">
+            <Link to="/article/create">
+              <img
+                src={theme === "dark" ? createWhite : createBlack}
+                alt=""
+                className="w-10 bg-inherit"
+              />
+            </Link>
+          </div>
+        )}
+
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />

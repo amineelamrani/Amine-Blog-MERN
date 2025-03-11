@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import blogIcon from "./../../public/edit-svgrepo-com.svg";
-import blogIconDark from "./../../public/edit-svgrepo-com_dark.svg";
+import blogIcon from "/edit-svgrepo-com.svg";
+import blogIconDark from "/edit-svgrepo-com_dark.svg";
 import ThemeSwitch from "./ThemeSwitch";
 import { useDispatch, useSelector } from "react-redux";
 import { storeTheme } from "../redux/user/userSlice";

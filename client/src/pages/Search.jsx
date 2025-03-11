@@ -96,7 +96,7 @@ export default function Search() {
           className="w-full flex flex-col items-center"
           onSubmit={handleSubmit}
         >
-          <label className="input input-bordered flex items-center gap-2 md:w-96">
+          <label className="input input-bordered flex items-center gap-2 max-w-xs md:min-w-96">
             <input
               type="text"
               className="grow"
@@ -120,9 +120,9 @@ export default function Search() {
             </svg>
           </label>
 
-          <div className="flex w-full mx-auto justify-center gap-5 items-center py-5">
+          <div className="flex flex-col sm:flex-row w-full mx-auto justify-center gap-5 items-center py-5">
             <select
-              className="select select-bordered select-ghost w-full max-w-xs"
+              className="select select-bordered select-ghost w-full max-w-xs md:w-52"
               value={searchData.category}
               onChange={(e) =>
                 setSearchData({ ...searchData, ["category"]: e.target.value })

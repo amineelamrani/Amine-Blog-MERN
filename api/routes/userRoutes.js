@@ -22,10 +22,19 @@ router.get("/delete", authController.deleteAccount);
 
 // Admin restricted routes
 router.use(authController.adminRestricted);
+
+// Admin routes
 router.get(
   "/admin/highlights/:period",
   userController.adminDashboardHighlights
 );
-router.get("/admin/graphs/:period", userController.adminDashboardGraphs);
+router.get(
+  "/admin/graphs/evolution/:period",
+  userController.adminDashboardGraphsEvolution
+);
+router.get(
+  "/admin/graphs/catDistribution",
+  userController.articleDistributionCategory
+);
 
 module.exports = router;

@@ -35,7 +35,6 @@ exports.adminRestricted = catchAsync(async (req, res, next) => {
 
   if (checkAdmin.admin) {
     req.userIdAdm = id;
-    console.log(req.userIdAdm);
     next();
   }
 });

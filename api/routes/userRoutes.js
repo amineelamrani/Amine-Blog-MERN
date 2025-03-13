@@ -20,6 +20,12 @@ router.use(authController.protect);
 router.post("/changePicture", userController.changeProfilePicture);
 router.get("/delete", authController.deleteAccount);
 
-// protected routes
+// Admin restricted routes
+router.use(authController.adminRestricted);
+router.get(
+  "/admin/highlights/:period",
+  userController.adminDashboardHighlights
+);
+router.get("/admin/graphs/:period", userController.adminDashboardGraphs);
 
 module.exports = router;

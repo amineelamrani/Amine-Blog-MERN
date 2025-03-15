@@ -313,6 +313,38 @@ exports.commentsLeaderboard = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.articlesLeaderboard = catchAsync(async (req, res, next) => {
+  const sort = req.params.sort;
+
+  if (sort === "trending") {
+    const articles = await Article.find({}, "-content").sort("-timesLiked");
+
+    return res.status(200).json({
+      status: "success",
+      result: articles,
+    });
+  } else if (sort === "latest") {
+    const articles = await Article.find({}, "-content").sort("-createdAt");
+
+    return res.status(200).json({
+      status: "success",
+      result: articles,
+    });
+  } else if (sort === "oldest") {
+    const articles = await Article.find({}, "-content").sort("createdAt");
+
+    return res.status(200).json({
+      status: "success",
+      result: articles,
+    });
+  }
+
+  return res.status(404).json({
+    status: "fail",
+    message: "Cannot process your request",
+  });
+});
+
 const getDataPerPeriod = async (data, rows) => {
   let dataArrayEvolution = [];
   if (data === "user") {

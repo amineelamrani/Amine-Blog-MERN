@@ -47,4 +47,9 @@ router.get(
   userController.commentsLeaderboard
 );
 
+router.get(
+  "/admin/graphs/leaderboard/articles/:sort",
+  userController.articlesLeaderboard
+);
+
 module.exports = router;

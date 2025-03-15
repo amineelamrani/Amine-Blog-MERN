@@ -82,8 +82,8 @@ exports.adminDashboardHighlights = catchAsync(async (req, res, next) => {
 //// Articles distribution per category [✔]
 
 // Table => (trending/Liked/Active - Latest - Oldest) [⏳]
-//// Comment leaderBoard
-//// Users leaderboard
+//// Comment leaderBoard [⏳]
+//// Users leaderboard [✔]
 //// Articles leaderboard
 
 exports.adminDashboardGraphsEvolution = catchAsync(async (req, res, next) => {
@@ -268,6 +268,42 @@ exports.usersLeaderboard = catchAsync(async (req, res, next) => {
     return res.status(200).json({
       status: "success",
       result: users,
+    });
+  }
+
+  return res.status(404).json({
+    status: "fail",
+    message: "Cannot process your request",
+  });
+});
+
+exports.commentsLeaderboard = catchAsync(async (req, res, next) => {
+  const sort = req.params.sort;
+
+  if (sort === "trending") {
+    // Fetch comments and if the have likedBy.length the biggest is what we will have first
+    const comments = await Comment.aggregate([
+      { $addFields: { total: { $size: "$likedBy" } } },
+      { $sort: { total: -1 } },
+    ]);
+
+    return res.status(200).json({
+      status: "success",
+      result: comments,
+    });
+  } else if (sort === "latest") {
+    const comments = await Comment.find({}).sort("-createdAt");
+
+    return res.status(200).json({
+      status: "success",
+      result: comments,
+    });
+  } else if (sort === "oldest") {
+    const comments = await Comment.find({}).sort("createdAt");
+
+    return res.status(200).json({
+      status: "success",
+      result: comments,
     });
   }
 

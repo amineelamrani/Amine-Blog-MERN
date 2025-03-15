@@ -42,4 +42,9 @@ router.get(
   userController.usersLeaderboard
 );
 
+router.get(
+  "/admin/graphs/leaderboard/comments/:sort",
+  userController.commentsLeaderboard
+);
+
 module.exports = router;

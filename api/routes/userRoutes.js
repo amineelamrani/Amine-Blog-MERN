@@ -37,4 +37,9 @@ router.get(
   userController.articleDistributionCategory
 );
 
+router.get(
+  "/admin/graphs/leaderboard/users/:sort",
+  userController.usersLeaderboard
+);
+
 module.exports = router;

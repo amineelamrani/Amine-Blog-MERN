@@ -79,9 +79,9 @@ exports.adminDashboardHighlights = catchAsync(async (req, res, next) => {
 // Graphes data to share => (Period : week, month)
 //// Evolution of comments per Period [✔]
 //// Evolution of Users number per period [✔]
-//// Articles distribution per category [⏳]
+//// Articles distribution per category [✔]
 
-// Table => (trending/Liked/Active - Latest - Oldest)
+// Table => (trending/Liked/Active - Latest - Oldest) [⏳]
 //// Comment leaderBoard
 //// Users leaderboard
 //// Articles leaderboard
@@ -186,8 +186,95 @@ exports.articleDistributionCategory = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.leaderboard = catchAsync(async (req, res, next) => {
+exports.usersLeaderboard = catchAsync(async (req, res, next) => {
   // for leaderboard parts
+  const sort = req.params.sort;
+  if (sort === "active") {
+    // Active => Most of comments having - Most of like to his comments - Most of like to other comments + most articles liked
+    //// Most comments having + Most comment like (to his own) => Fetch the comments by the Id and length of the likedBy
+    //// Most like of other's comments => see how much that ID is mentionned in the comment.likeBy
+    //// most articles liked => user.likedArticles.length
+
+    const users = await User.find(
+      {},
+      "-password -confirmPassword -uniqueString -isValid -admin -__v"
+    );
+    let leaderboardArray = [];
+
+    for (const user of users) {
+      let userData = {
+        comments: 0,
+        ownCommentLikes: 0,
+        otherCommentLikes: 0,
+        articleLikes: 0,
+      };
+
+      const comments = await Comment.find({ owner: user._id });
+      // Comment that the user own
+      userData.comments = comments.length;
+
+      // Most like to all of the user comments
+      for (const comment of comments) {
+        userData.ownCommentLikes =
+          userData.ownCommentLikes + comment.likedBy.length;
+      }
+
+      // Most likes to the other comments
+      const otherLikedComments = await Comment.find({})
+        .where("likedBy")
+        .in([user._id])
+        .exec();
+      userData.otherCommentLikes = otherLikedComments.length;
+
+      // Most articles Liked
+      userData.articleLikes = user.likedArticles.length;
+
+      // How to display the data
+      const userDataDisplay = {
+        _id: user._id,
+        name: user.name,
+        profilePicture: user.profilePicture,
+        email: user.email,
+        interactions: userData,
+        activity:
+          userData.comments * 3 +
+          userData.ownCommentLikes * 2 +
+          userData.otherCommentLikes * 1 +
+          userData.articleLikes * 2,
+      };
+      leaderboardArray.push(userDataDisplay);
+    }
+
+    return res.status(200).json({
+      status: "success",
+      result: leaderboardArray,
+    });
+  } else if (sort === "latest") {
+    const users = await User.find(
+      {},
+      "-password -confirmPassword -uniqueString -isValid -admin -__v"
+    ).sort("-createdAt");
+
+    return res.status(200).json({
+      status: "success",
+      result: users,
+    });
+  } else if (sort === "oldest") {
+    const users = await User.find(
+      {},
+      "-password -confirmPassword -uniqueString -isValid -admin -__v"
+    ).sort("createdAt");
+
+    return res.status(200).json({
+      status: "success",
+      result: users,
+    });
+  }
+
+  return res.status(404).json({
+    status: "fail",
+    message: "Cannot process your request",
+  });
 });
 
 const getDataPerPeriod = async (data, rows) => {

@@ -108,6 +108,7 @@ exports.adminDashboardGraphsEvolution = catchAsync(async (req, res, next) => {
     );
 
     return res.status(202).json({
+      status: "success",
       data: {
         users: { columns: usersEvolutionColumns, rows: weekArrays.slice(1) },
         articles: {
@@ -133,6 +134,7 @@ exports.adminDashboardGraphsEvolution = catchAsync(async (req, res, next) => {
     );
 
     return res.status(202).json({
+      status: "success",
       data: {
         users: { columns: usersEvolutionColumns, rows: monthArrays.slice(1) },
         articles: {
@@ -154,10 +156,33 @@ exports.adminDashboardGraphsEvolution = catchAsync(async (req, res, next) => {
 });
 
 exports.articleDistributionCategory = catchAsync(async (req, res, next) => {
-  //// Articles distribution per category [⏳]
-  // Here see each category and see it existed in how much articles
-  res.json({
-    result: "hi",
+  const articles = await Article.find({});
+  let categoryTypes = {};
+
+  for (let i = 0; i < articles.length; i++) {
+    // Work with objects
+    // Got article by article -> Got the categories [array] -> Got category by category
+    // Check in the categroryType object if that article name exist in the key entries (if it exist we add the value of the object 1)
+    // And we return the object
+
+    const articleCategories = articles[i].category;
+
+    for (const category of articleCategories) {
+      // Check if the category exist in the object categoryTypes (counter)
+      if (Object.keys(categoryTypes).includes(category)) {
+        categoryTypes = {
+          ...categoryTypes,
+          [category]: categoryTypes[category] * 1 + 1,
+        };
+      } else {
+        categoryTypes = { ...categoryTypes, [category]: 1 };
+      }
+    }
+  }
+
+  return res.status(200).json({
+    status: "success",
+    result: categoryTypes,
   });
 });
 

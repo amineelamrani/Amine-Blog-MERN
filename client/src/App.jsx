@@ -18,6 +18,7 @@ import AdminRestricted from "./components/utils/AdminRestricted";
 import ReadArticle from "./pages/articlePages/ReadArticle";
 import createWhite from "/create-article-white.svg";
 import createBlack from "/create-article-black.svg";
+import AdminDashboard from "./pages/adminPages/AdminDashboard";
 
 export default function App() {
   const { theme, currentUser } = useSelector((state) => state.user);
@@ -75,6 +76,7 @@ export default function App() {
             <Route path="article">
               <Route path="create" element={<CreateArticle />}></Route>
             </Route>
+            <Route path="/admin/dashboard" element={<AdminDashboard />}></Route>
           </Route>
 
           <Route path="/about" element={<About />} />

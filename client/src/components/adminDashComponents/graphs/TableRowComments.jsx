@@ -10,9 +10,7 @@ export default function TableRowComments({
 }) {
   return (
     <tr>
-      <td className="font-bold">
-        <Link to={`/admin/commentInfo/${id}`}>{ind}</Link>
-      </td>
+      <td className="font-bold">{ind}</td>
       <td className="font-bold">{name}</td>
       <td>
         <div className="flex items-center gap-3">

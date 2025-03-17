@@ -1,6 +1,6 @@
 export default function HighlightComp({ text, item, image, period }) {
   return (
-    <div className="flex flex-col w-full md:w-1/3 lg:w-1/6 p-2 h-full">
+    <div className="flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/6 p-2 h-full">
       <div className="bg-primary-content rounded-xl flex items-start gap-2 p-2">
         <img
           src={image}

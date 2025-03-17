@@ -10,9 +10,7 @@ export default function TableRowArticles({
 }) {
   return (
     <tr>
-      <td className="font-bold">
-        <Link to={`/admin/articleInfo/${id}`}>{ind}</Link>
-      </td>
+      <td className="font-bold">{ind}</td>
       <td className="font-bold">{title}</td>
       <td>
         <div className="flex items-center gap-3">

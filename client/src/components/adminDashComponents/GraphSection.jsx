@@ -3,6 +3,7 @@ import EvolutionGraph from "./graphs/EvolutionGraph";
 import DistributionArticles from "./graphs/DistributionArticles";
 import UsersLeaderboard from "./graphs/UsersLeaderboard";
 import CommentsLeaderboard from "./graphs/CommentsLeaderboard";
+import ArticlesLeaderboard from "./graphs/ArticlesLeaderboard";
 
 export default function GraphSection() {
   const [evolutionData, setEvolutionData] = useState(null);
@@ -54,11 +55,7 @@ export default function GraphSection() {
 
       <UsersLeaderboard />
 
-      <div className="w-2/3 h-1/3 p-1">
-        <div className="text-center border w-full h-full">
-          Articles leaderboard
-        </div>
-      </div>
+      <ArticlesLeaderboard />
     </div>
   );
 }

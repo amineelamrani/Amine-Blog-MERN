@@ -55,8 +55,10 @@ export default function UserEvolutionGraph({ dataFetched, textDisplay }) {
   };
 
   return (
-    <div className="w-full md:w-1/3 h-1/3 text-center border">
-      <Line data={data} options={options} />
+    <div className="w-full md:w-1/3 h-1/3 p-1">
+      <div className="text-center w-full h-full border">
+        <Line data={data} options={options} />
+      </div>
     </div>
   );
 }

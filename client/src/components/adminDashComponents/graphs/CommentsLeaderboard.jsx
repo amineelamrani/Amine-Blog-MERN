@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import TableRowUsers from "./TableRowUsers";
+import { useState, useEffect } from "react";
+import TableRowComments from "./TableRowComments";
 
-export default function UsersLeaderboard() {
+export default function CommentsLeaderboard() {
   const [fetchedData, setFetchedData] = useState(null);
-  const [sort, setSort] = useState("active");
+  const [sort, setSort] = useState("trending");
 
   useEffect(() => {
     const fetchDistribution = async () => {
       try {
         const res = await fetch(
-          `/api/v1/users/admin/graphs/leaderboard/users/${sort}`,
+          `/api/v1/users/admin/graphs/leaderboard/comments/${sort}`,
           {
             method: "GET",
             headers: {
@@ -32,16 +32,16 @@ export default function UsersLeaderboard() {
   }, [sort]);
 
   return (
-    <div className="w-1/3 h-1/3 p-1">
+    <div className="w-1/2 h-1/3 p-1">
       <div className="h-full overflow-x-auto text-center border">
         <details className="dropdown dropdown-bottom dropdown-end w-full text-end">
           <summary className="">Sort by</summary>
           <ul className="menu dropdown-content bg-base-100 rounded-box z-20 w-fit gap-2 px-2 shadow">
             <li
               className="btn btn-xs btn-ghost"
-              onClick={() => setSort("active")}
+              onClick={() => setSort("trending")}
             >
-              Active
+              Trending
             </li>
             <li
               className="btn btn-xs btn-ghost"
@@ -61,21 +61,28 @@ export default function UsersLeaderboard() {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
-              <th>User</th>
-              <th>Email</th>
+              <th>ind</th>
+              <th>Owner</th>
+              <th>Image</th>
+              <th>Content</th>
+              <th>Likes</th>
             </tr>
           </thead>
           <tbody>
             {fetchedData && (
               <>
                 {fetchedData.map((el, index) => (
-                  <TableRowUsers
-                    image={el.profilePicture}
-                    name={el.name}
-                    email={el.email}
-                    interactions={el.activity}
+                  <TableRowComments
+                    ind={index + 1}
+                    name={el.ownerName}
+                    image={
+                      el.owner
+                        ? el.owner.profilePicture
+                        : "https://img.icons8.com/?size=100&id=Ib9FADThtmSf&format=png&color=000000"
+                    }
+                    content={el.content}
                     id={el._id}
+                    likes={el.likedBy.length}
                     key={index}
                   />
                 ))}

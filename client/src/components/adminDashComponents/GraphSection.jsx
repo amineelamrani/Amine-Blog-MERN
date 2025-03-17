@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import EvolutionGraph from "./graphs/EvolutionGraph";
 import DistributionArticles from "./graphs/DistributionArticles";
 import UsersLeaderboard from "./graphs/UsersLeaderboard";
+import CommentsLeaderboard from "./graphs/CommentsLeaderboard";
 
 export default function GraphSection() {
   const [evolutionData, setEvolutionData] = useState(null);
@@ -49,10 +50,15 @@ export default function GraphSection() {
       )}
       <DistributionArticles />
 
-      <div className="w-1/2 h-1/3 text-center border">Comments Leaderboard</div>
+      <CommentsLeaderboard />
 
       <UsersLeaderboard />
-      <div className="w-2/3 h-1/3 text-center border">Articles leaderboard</div>
+
+      <div className="w-2/3 h-1/3 p-1">
+        <div className="text-center border w-full h-full">
+          Articles leaderboard
+        </div>
+      </div>
     </div>
   );
 }

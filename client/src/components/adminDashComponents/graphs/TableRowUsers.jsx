@@ -14,7 +14,7 @@ export default function TableRowUsers({
           <div className="avatar">
             <div className="mask mask-squircle h-8 w-8">
               <Link to={`/admin/userInfo/${id}`}>
-                <img src={image} alt="Avatar " />
+                <img src={image} alt="Avatar " className="bg-white" />
               </Link>
             </div>
           </div>

@@ -71,9 +71,9 @@ export default function DistributionArticles({}) {
   };
 
   return (
-    <div className="w-1/2 h-1/3 text-center border">
+    <div className="w-1/2 h-1/3 p-1">
       {fetchedData && (
-        <div className="w-full h-full">
+        <div className="w-full h-full text-center border">
           <Bar data={data} options={options} />
         </div>
       )}

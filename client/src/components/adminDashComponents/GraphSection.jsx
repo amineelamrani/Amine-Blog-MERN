@@ -5,18 +5,21 @@ import UsersLeaderboard from "./graphs/UsersLeaderboard";
 import CommentsLeaderboard from "./graphs/CommentsLeaderboard";
 import ArticlesLeaderboard from "./graphs/ArticlesLeaderboard";
 
-export default function GraphSection() {
+export default function GraphSection({ period }) {
   const [evolutionData, setEvolutionData] = useState(null);
 
   useEffect(() => {
     const fetchEvolution = async () => {
       try {
-        const res = await fetch(`/api/v1/users/admin/graphs/evolution/7`, {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-          },
-        });
+        const res = await fetch(
+          `/api/v1/users/admin/graphs/evolution/${period}`,
+          {
+            method: "GET",
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+        );
         const data = await res.json();
         if (data && data.status === "success") {
           setEvolutionData(data.data);
@@ -29,32 +32,29 @@ export default function GraphSection() {
     };
 
     fetchEvolution();
-  }, []);
+  }, [period]);
 
   return (
     <div id="graphs-section" className="flex flex-wrap w-full h-full">
-      {evolutionData && (
-        <>
-          <EvolutionGraph
-            dataFetched={evolutionData.users}
-            textDisplay="Users per Week"
-          />
-          <EvolutionGraph
-            dataFetched={evolutionData.articles}
-            textDisplay="Articles per Week"
-          />
-          <EvolutionGraph
-            dataFetched={evolutionData.comments}
-            textDisplay="Comments per Week"
-          />
-        </>
-      )}
+      <EvolutionGraph
+        dataFetched={!evolutionData ? null : evolutionData.users}
+        evolutionData={evolutionData}
+        textDisplay={`Users per ${period === 7 ? "Week" : "Month"}`}
+      />
+      <EvolutionGraph
+        dataFetched={!evolutionData ? null : evolutionData.articles}
+        evolutionData={evolutionData}
+        textDisplay={`Articles per ${period === 7 ? "Week" : "Month"}`}
+      />
+      <EvolutionGraph
+        dataFetched={!evolutionData ? null : evolutionData.comments}
+        evolutionData={evolutionData}
+        textDisplay={`Comments per ${period === 7 ? "Week" : "Month"}`}
+      />
+
       <DistributionArticles />
-
       <CommentsLeaderboard />
-
       <UsersLeaderboard />
-
       <ArticlesLeaderboard />
     </div>
   );

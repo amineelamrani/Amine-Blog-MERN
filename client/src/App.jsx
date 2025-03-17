@@ -50,14 +50,14 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="container mx-auto px-10">
+      <div className="container mx-auto px-10 ">
         {adminRight && (
-          <div className="toast">
+          <div className={`toast  bg-base-100 z-40 p-2`}>
             <Link to="/article/create">
               <img
                 src={theme === "dark" ? createWhite : createBlack}
                 alt=""
-                className="w-10 bg-inherit"
+                className="w-8"
               />
             </Link>
           </div>

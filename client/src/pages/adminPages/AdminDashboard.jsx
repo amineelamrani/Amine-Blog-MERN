@@ -1,13 +1,16 @@
 import { Link } from "react-router";
 import HighlightSection from "../../components/adminDashComponents/HighlightSection";
 import GraphSection from "../../components/adminDashComponents/GraphSection";
+import { useState } from "react";
 
 export default function AdminDashboard() {
+  const [period, setPeriod] = useState(7); // For the period for the highlights and evolution graphs
+
   return (
-    <div className="absolute right-0 left-0 w-full h-dvh overscroll-none z-10 bg-base-100 flex overflow-hidden border-t-2">
-      <div
+    <div className="w-full h-full z-10 bg-base-100 py-5 border-t-2">
+      {/* <div
         id="side-panel"
-        className="hidden md:flex md:w-1/6 h-full border-r border-black px-3 pt-5"
+        className="hidden md:fixed md:w-1/6 w-32 h-full z-0 border-r border-black px-3 pt-5"
       >
         <ul className="menu rounded-box w-full">
           <li>
@@ -23,7 +26,7 @@ export default function AdminDashboard() {
             <Link>Comments</Link>
           </li>
         </ul>
-      </div>
+      </div> */}
 
       <div
         id="dashboard-content"
@@ -32,26 +35,27 @@ export default function AdminDashboard() {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Main Dashboard</h1>
           <div className="dropdown dropdown-bottom">
-            <div tabIndex={0} role="button">
-              Monthly V
+            <div tabIndex={0} className="flex items-center" role="button">
+              Sort by {period === 7 ? "Week" : "Month"}
+              <span className="text-2xl">&#11176;</span>
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 p-2 shadow gap-2"
             >
-              <li>
-                <a>Weekly</a>
+              <li className="btn btn-xs" onClick={() => setPeriod(7)}>
+                Weekly
               </li>
-              <li>
-                <a>Monthly</a>
+              <li className="btn btn-xs" onClick={() => setPeriod(30)}>
+                Monthly
               </li>
             </ul>
           </div>
         </div>
 
-        <HighlightSection />
+        <HighlightSection period={period} />
 
-        <GraphSection />
+        <GraphSection period={period} />
       </div>
     </div>
   );

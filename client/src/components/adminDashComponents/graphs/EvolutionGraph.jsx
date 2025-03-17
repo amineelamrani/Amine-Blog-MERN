@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import loader from "/loading-spinner-svgrepo-com.svg";
 
 ChartJS.register(
   CategoryScale,
@@ -32,8 +33,13 @@ const options = {
   },
 };
 
-export default function UserEvolutionGraph({ dataFetched, textDisplay }) {
-  const labels = dataFetched.rows.map((el) => el.slice(5, 10));
+export default function UserEvolutionGraph({
+  dataFetched,
+  textDisplay,
+  evolutionData,
+}) {
+  const labels =
+    evolutionData !== null ? dataFetched.rows.map((el) => el.slice(5, 10)) : [];
   const data = {
     labels: labels,
     datasets: [
@@ -49,16 +55,23 @@ export default function UserEvolutionGraph({ dataFetched, textDisplay }) {
           : textDisplay.startsWith("Article")
           ? "green"
           : "blue",
-        data: dataFetched.columns,
+        data: evolutionData !== null ? dataFetched.columns : [],
       },
     ],
   };
 
   return (
-    <div className="w-full md:w-1/3 h-1/3 p-1">
-      <div className="text-center w-full h-full border">
-        <Line data={data} options={options} />
-      </div>
+    <div className="w-full lg:w-1/3 h-72 p-1 flex items-center justify-center">
+      {!evolutionData && (
+        <div className="w-full h-full border flex items-center justify-center">
+          <img src={loader} alt="spinner" className="animate-spin w-10" />
+        </div>
+      )}
+      {evolutionData && (
+        <div className="text-center w-full h-full border flex items-center justify-center">
+          <Line data={data} options={options} />
+        </div>
+      )}
     </div>
   );
 }

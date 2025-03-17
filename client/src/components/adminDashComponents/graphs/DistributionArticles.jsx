@@ -9,6 +9,7 @@ import {
 } from "chart.js";
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import loader from "/loading-spinner-svgrepo-com.svg";
 
 ChartJS.register(
   CategoryScale,
@@ -71,9 +72,14 @@ export default function DistributionArticles({}) {
   };
 
   return (
-    <div className="w-1/2 h-1/3 p-1">
+    <div className="w-full lg:w-1/2  h-72 p-1  flex items-center justify-center">
+      {!fetchedData && (
+        <div className="w-full h-full border flex items-center justify-center">
+          <img src={loader} alt="spinner" className="animate-spin w-10" />
+        </div>
+      )}
       {fetchedData && (
-        <div className="w-full h-full text-center border">
+        <div className="w-full h-full text-center border flex items-center justify-center">
           <Bar data={data} options={options} />
         </div>
       )}

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { changeProfilePicture, signOut } from "../redux/user/userSlice";
 import ConfirmButtonCheck from "../components/svgComponents/ConfirmButtonCheck";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ActionConfirmation from "../components/ActionConfirmation";
 
 // in the profile route => I will have
@@ -12,6 +12,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ error: false, message: "" });
+  const [adminRight, setAdminRight] = useState(false);
 
   const { currentUser, theme } = useSelector((state) => state.user);
   const [file, setFile] = useState(null);
@@ -19,6 +20,26 @@ export default function Profile() {
 
   const cloudName = import.meta.env.VITE_CLOUDINARY_cloudName;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_uploadPreset;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("/api/v1/articles/check/checkAdmin", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (data && data.status === "success") {
+        setAdminRight(true);
+        // return <Outlet />;
+      } else {
+        setAdminRight(false);
+      }
+    };
+
+    fetchData();
+  }, [currentUser]);
 
   const signOutAPI = async () => {
     const res = await fetch("/api/v1/users/signout", {
@@ -190,6 +211,11 @@ export default function Profile() {
         <span className="text-xl font-black animate-bounce">&#11107;</span> See
         comments
       </button>
+      {adminRight && (
+        <Link to="/admin/dashboard" className="btn btn-primary">
+          Admin Dashboard
+        </Link>
+      )}
     </div>
   );
 }

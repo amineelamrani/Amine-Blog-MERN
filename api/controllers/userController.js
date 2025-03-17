@@ -286,20 +286,29 @@ exports.commentsLeaderboard = catchAsync(async (req, res, next) => {
       { $addFields: { total: { $size: "$likedBy" } } },
       { $sort: { total: -1 } },
     ]);
+    await Comment.populate(comments, {
+      path: "owner",
+      select: "name profilePicture",
+    });
+    // await comments.populate("owner", "name profilePicture");
 
     return res.status(200).json({
       status: "success",
       result: comments,
     });
   } else if (sort === "latest") {
-    const comments = await Comment.find({}).sort("-createdAt");
+    const comments = await Comment.find({})
+      .populate("owner", "name profilePicture")
+      .sort("-createdAt");
 
     return res.status(200).json({
       status: "success",
       result: comments,
     });
   } else if (sort === "oldest") {
-    const comments = await Comment.find({}).sort("createdAt");
+    const comments = await Comment.find({})
+      .populate("owner", "name profilePicture")
+      .sort("createdAt");
 
     return res.status(200).json({
       status: "success",

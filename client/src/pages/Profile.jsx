@@ -206,13 +206,10 @@ export default function Profile() {
           handleClick={handleDeleteAccount}
         />
       </div>
-      <button className="btn">
-        {" "}
-        <span className="text-xl font-black animate-bounce">&#11107;</span> See
-        comments
-      </button>
+
       {adminRight && (
         <Link to="/admin/dashboard" className="btn btn-primary">
+          <span className="text-xl font-black animate-bounce">&#11107;</span>{" "}
           Admin Dashboard
         </Link>
       )}

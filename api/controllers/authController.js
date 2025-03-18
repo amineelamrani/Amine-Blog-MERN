@@ -358,7 +358,7 @@ const sendResetMail = async (email, resetToken) => {
     subject: `Resetting Password `, // Subject line
     html: `<h1>Hello!</h1>
       <p>Please visit this link to reset your password.<br/>It is valid for only 1hour! Do not share this Link with anyone!!</p>
-      <p>Here is your reset Token</br>${resetToken}</p>
+      <p>Here is your reset Token </br>${resetToken}</p>
       
     `,
   });

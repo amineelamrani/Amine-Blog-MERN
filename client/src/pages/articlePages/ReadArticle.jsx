@@ -112,7 +112,7 @@ export default function ReadArticle() {
             <p className="text-center text-base-content">
               {articleData.summary}
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap items-center justify-center">
               {articleData.category.map((element, index) => (
                 <div
                   className={`badge ${badgeTypes[index % 4]}`}

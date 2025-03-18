@@ -25,7 +25,8 @@ export default function CommentsLeaderboard() {
           setFetchedData(null);
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        return;
       }
     };
 

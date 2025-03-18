@@ -35,7 +35,6 @@ export default function AddCommentSection({
           );
         }
       } catch (err) {
-        console.log("There is an error : ", err);
         dispatch(addCommentFailed(err.message));
       }
     }
@@ -54,8 +53,8 @@ export default function AddCommentSection({
   };
 
   return (
-    <div className="flex">
-      <label className="input input-bordered flex  w-full">
+    <div className="flex items-center">
+      <label className="input input-bordered flex  w-full h-8 md:h-12">
         <input
           type="text"
           className="grow"
@@ -72,7 +71,7 @@ export default function AddCommentSection({
       ) : (
         <svg
           fill={theme === "dark" ? "#ffffff" : "#000000"}
-          className="w-12 h-12 px-1 hover:cursor-pointer"
+          className="w-8 h-8 md:w-12 md:h-12 px-1 hover:scale-105 hover:cursor-pointer"
           viewBox="0 0 32 32"
           id="icon"
           xmlns="http://www.w3.org/2000/svg"

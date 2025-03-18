@@ -25,7 +25,8 @@ export default function ArticlesLeaderboard() {
           setFetchedData(null);
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        return;
       }
     };
 

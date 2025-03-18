@@ -40,7 +40,6 @@ exports.adminRestricted = catchAsync(async (req, res, next) => {
 });
 
 exports.checkAdminRight = (req, res) => {
-  console.log(req.userIdAdm);
   if (req.userIdAdm) {
     return res.status(200).json({
       status: "success",

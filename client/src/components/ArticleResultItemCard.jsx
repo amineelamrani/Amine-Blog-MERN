@@ -19,15 +19,12 @@ export default function ArticleResultItemCard({ article }) {
     <>
       {article && (
         <div className="w-full md:w-1/2 lg:w-1/3 p-5">
-          <div className="p-5 shadow-2xl flex flex-col gap-3 h-full overflow-hidden">
+          <div className="p-5 shadow-2xl flex flex-col gap-3 w-full h-full overflow-hidden">
             <Link to={`/article/read/${article._id}`}>
-              <div className="overflow-hidden">
-                <img
-                  src={article.image}
-                  alt="article image"
-                  className="hover:scale-125 transition ease-in-out "
-                />
-              </div>
+              <div
+                className="overflow-hidden transition ease-in-out hover:scale-90 w-full h-72 md:h-60 lg:h-72 bg-cover bg-center"
+                style={{ backgroundImage: `url(${article.image})` }}
+              ></div>
             </Link>
 
             <div className="flex flex-col justify-between h-full">

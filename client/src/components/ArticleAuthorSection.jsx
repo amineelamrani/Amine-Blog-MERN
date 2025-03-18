@@ -16,16 +16,14 @@ export default function ArticleAuthorSection({
   const handleCopyText = async (e) => {
     try {
       await navigator.clipboard.writeText(e.target.baseURI);
-      console.log("Text Copied to ClipBoard");
     } catch (error) {
-      console.log(error);
+      return;
     }
   };
 
   const handleLikeClick = async () => {
     if (currentUser === null) {
       // we need to have a popup here saying that you need to be logged in
-      console.log("You must be logged it to like the article");
       return;
     }
 
@@ -38,13 +36,12 @@ export default function ArticleAuthorSection({
       });
       const data = await res.json();
       if (data.status === "success") {
-        console.log("Article Liked successfully");
         setIsArticleLiked(true);
       } else {
-        console.log(data.message);
+        return;
       }
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
 
@@ -56,11 +53,11 @@ export default function ArticleAuthorSection({
             <img
               src={author.profilePicture}
               alt="author image"
-              className="w-14 h-14 rounded-full border bg-white"
+              className="w-8 h-8 md:w-14 md:h-14 rounded-full border bg-white"
             />
             <ul className="flex flex-col items-start ">
-              <li className="font-bold text-lg">{author.name}</li>
-              <li className="text-base-content">Admin</li>
+              <li className="font-bold text-base md:text-lg">{author.name}</li>
+              <li className="text-base-content text-sm md:text-base">Admin</li>
             </ul>
           </div>
           <div className="flex gap-4 items-center">
@@ -68,7 +65,7 @@ export default function ArticleAuthorSection({
               <img
                 src={theme === "dark" ? whiteBorderLike : blackBorderLike}
                 alt=""
-                className="w-8 hover:cursor-pointer"
+                className="w-5 h-5 md:w-8 md:h-8 hover:scale-105 hover:cursor-pointer"
                 onClick={handleLikeClick}
               />
             )}
@@ -76,7 +73,7 @@ export default function ArticleAuthorSection({
               <img
                 src={theme === "dark" ? whiteFullLike : blackFullLike}
                 alt=""
-                className="w-8 "
+                className="w-5 h-5 md:w-8 md:h-8"
               />
             )}
             <button className="btn" onClick={handleCopyText}>

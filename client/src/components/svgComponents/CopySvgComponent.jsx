@@ -2,7 +2,7 @@ const CopySvgComponent = ({ theme }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
     <svg
       fill={theme === "dark" ? "#ffffff" : "#000000"}
-      className="w-5 h-5"
+      className="w-4 h-4 md:w-5 md:h-5"
       viewBox="0 0 32 32"
       data-name="Layer 1"
       id="Layer_1"

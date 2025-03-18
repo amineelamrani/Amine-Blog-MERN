@@ -81,7 +81,7 @@ export default function Profile() {
 
   const handleUpload = async () => {
     if (!file) {
-      console.log("need a file");
+      // console.log("need a file");
       setError({ error: true, message: "You need to specify a File" });
       return;
     }
@@ -106,7 +106,8 @@ export default function Profile() {
       // send request to the server to update the profile picture
       // change the state
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      return;
     }
   };
 
@@ -124,7 +125,7 @@ export default function Profile() {
         dispatch(signOut());
       }
     } catch (err) {
-      console.log("oops there was an error :", err);
+      // console.log("oops there was an error :", err);
       setIsLoading(false);
       setError({
         error: true,

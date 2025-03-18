@@ -26,7 +26,8 @@ export default function HighlightSection({ period }) {
           setFetchedHighlights(null);
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        return;
       }
     };
 

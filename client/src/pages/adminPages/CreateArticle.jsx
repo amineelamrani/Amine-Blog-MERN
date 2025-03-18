@@ -39,7 +39,7 @@ export default function CreateArticle() {
     e.preventDefault();
     // Check if image selected
     if (!selectedFile) {
-      console.log("there is an error");
+      // console.log("there is an error");
       return dispatch(createArticleFailed("There is no file selected"));
       // return setError({ error: true, message: "There is no file selected" });
     }
@@ -73,7 +73,7 @@ export default function CreateArticle() {
         category: cat,
         image: imageUrl,
       });
-      console.log(articleCreate);
+      // console.log(articleCreate);
       if (articleCreate && articleCreate.status === "success") {
         dispatch(uploadsuccess());
         // setError({ error: false, message: "" });

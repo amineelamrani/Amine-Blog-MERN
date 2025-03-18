@@ -23,7 +23,6 @@ export default function CommentComponent({
   const handleCommentLikeClick = async () => {
     if (currentUser === null) {
       // we need to have a popup here saying that you need to be logged in
-      console.log("You must be logged it to like the article");
       return;
     }
     try {
@@ -34,52 +33,56 @@ export default function CommentComponent({
         },
       });
       const data = await res.json();
-      // console.log(data);
       if (data.status === "success") {
-        console.log("Article Liked successfully");
         comment.likedBy.push(userId);
         setLiked(true);
       } else {
-        console.log(data.message);
+        return;
       }
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
 
   return (
     <div className="flex w-full gap-4 items-start py-5 border-b-2 border-neutral">
-      <div>
+      <div className="min-w-10 w-1/12 flex items-start justify-center">
         {comment.owner && (
           <img
             src={comment.owner.profilePicture}
             alt="comment"
-            className="w-12 h-12 rounded-full border border-black bg-white"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-black bg-white"
           />
         )}
         {!comment.owner && (
           <img
             src="https://img.icons8.com/?size=100&id=Ib9FADThtmSf&format=png&color=000000"
             alt="comment"
-            className="w-12 h-12 rounded-full border border-black bg-white"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-black bg-white"
           />
         )}
       </div>
 
-      <div className="flex flex-col">
-        <div className="flex gap-2">
+      <div className="flex flex-col w-11/12 text-wrap">
+        <div className="flex items-center gap-1 w-full md:gap-2">
           <h1 className="font-bold">@{comment.ownerName}</h1>
           {daysDifference === 0 && (
-            <p>{differenceInHours(Date.now(), creationDate)} Hour ago</p>
+            <p className="text-xs">
+              {differenceInHours(Date.now(), creationDate)} Hour ago
+            </p>
           )}
           {daysDifference < 30 && daysDifference > 0 && (
-            <p>{daysDifference} day ago</p>
+            <p className="text-xs">{daysDifference} day ago</p>
           )}
           {daysDifference >= 30 && (
-            <p>{differenceInMonths(Date.now(), creationDate)} day ago</p>
+            <p className="text-xs">
+              {differenceInMonths(Date.now(), creationDate)} day ago
+            </p>
           )}
         </div>
-        <p className="py-2">{comment.content}</p>
+        <p className="py-2 w-full text-wrap overflow-hidden">
+          {comment.content}
+        </p>
         <div className="flex items-center gap-1">
           {comment.likedBy.includes(userId) && (
             <img
@@ -92,7 +95,7 @@ export default function CommentComponent({
             <img
               src={theme === "dark" ? whiteBorderLike : blackBorderLike}
               alt=""
-              className="w-8 hover:cursor-pointer"
+              className="w-8 hover:scale-110 hover:cursor-pointer"
               onClick={handleCommentLikeClick}
             />
           )}

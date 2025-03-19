@@ -38,7 +38,6 @@ Welcome to the repository of my Blog App built using the MERN Stack. Below, you 
 - Cloudinary: For efficient image and profile pictures storage.
 - Firebase for oAuth.
 
-
 ## 🚀 Getting Started
 
 Follow these steps to set up the project locally:
@@ -78,13 +77,11 @@ VITE_CLOUDINARY_cloudName
 # + Firebase informations
 ```
 
-3. Open your browser:
-   Visit :
+3. Open your browser and Visit :
 
 ```sh
 http://localhost:5173
 ```
-
 
 ## 🤝 Contributing
 

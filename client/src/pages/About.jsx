@@ -1,7 +1,7 @@
 export default function About() {
   return (
-    <div className="container py-24 px-5 md:px-24 w-full mx-auto flex flex-col items-center gap-5">
-      <h1 className="text-2xl md:text-2xl font-bold capitalize">
+    <div className="container py-24 px-5 md:px-24 lg:px-52 w-full mx-auto flex flex-col items-center gap-5">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl md:pb-10 text-center font-bold capitalize">
         About Amine&lsquo;s Code Chronicles Blog
       </h1>
       <p>

@@ -65,7 +65,9 @@ export default function CommentComponent({
 
       <div className="flex flex-col w-11/12 text-wrap">
         <div className="flex items-center gap-1 w-full md:gap-2">
-          <h1 className="font-bold">@{comment.ownerName}</h1>
+          <h1 className="font-bold text-sm md:text-base">
+            @{comment.ownerName}
+          </h1>
           {daysDifference === 0 && (
             <p className="text-xs">
               {differenceInHours(Date.now(), creationDate)} Hour ago
@@ -80,7 +82,7 @@ export default function CommentComponent({
             </p>
           )}
         </div>
-        <p className="py-2 w-full text-wrap overflow-hidden">
+        <p className="py-2 w-full text-xs md:text-base text-wrap overflow-hidden">
           {comment.content}
         </p>
         <div className="flex items-center gap-1">
@@ -88,18 +90,18 @@ export default function CommentComponent({
             <img
               src={theme === "dark" ? whiteFullLike : blackFullLike}
               alt=""
-              className="w-8"
+              className="w-4 md:w-8"
             />
           )}
           {!comment.likedBy.includes(userId) && (
             <img
               src={theme === "dark" ? whiteBorderLike : blackBorderLike}
               alt=""
-              className="w-8 hover:scale-110 hover:cursor-pointer"
+              className="w-4 md:w-8 hover:scale-110 hover:cursor-pointer"
               onClick={handleCommentLikeClick}
             />
           )}
-          <p>{comment.likedBy.length} like</p>
+          <p className="text-sm md:text-base">{comment.likedBy.length} like</p>
         </div>
       </div>
     </div>

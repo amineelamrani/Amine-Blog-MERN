@@ -75,7 +75,7 @@ export default function ArticleCommentsSections({ articleId, userId }) {
             <p className="border px-2">{commentsFetched.length}</p>
           </div>
 
-          <div className="px-10">{commentsPlaceContent}</div>
+          <div className="lg:px-10">{commentsPlaceContent}</div>
         </>
       )}
     </div>

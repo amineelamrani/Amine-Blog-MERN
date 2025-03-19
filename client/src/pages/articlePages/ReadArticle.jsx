@@ -98,7 +98,7 @@ export default function ReadArticle() {
           )}
 
           <div id="header-section" className="flex flex-col gap-3 items-center">
-            <h3 className="text-primary font-bold">
+            <h3 className="text-primary font-bold text-sm md:text-base">
               Published{" "}
               {new Date(articleData.createdAt)
                 .toDateString()
@@ -106,10 +106,10 @@ export default function ReadArticle() {
                 .slice(1)
                 .join(" ")}
             </h3>
-            <h1 className="text-4xl font-bold text-center px-10 capitalize">
+            <h1 className="text-2xl md:text-4xl font-bold text-center px-10 capitalize">
               {articleData.title}
             </h1>
-            <p className="text-center text-base-content">
+            <p className="text-center text-sm md:text-base text-base-content">
               {articleData.summary}
             </p>
             <div className="flex gap-2 flex-wrap items-center justify-center">
@@ -130,7 +130,7 @@ export default function ReadArticle() {
               <h1
                 className={`text-${
                   theme === "dark" ? "white" : "black"
-                } font-bold text-xl`}
+                } font-bold text-base md:text-xl`}
               >
                 👋 Liked by {articleData.timesLiked} person
                 {articleData.timesLiked > 1 && "s"}

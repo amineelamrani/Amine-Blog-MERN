@@ -1,6 +1,5 @@
 # Amine Blog Project
 
----
 
 ## Welcome to the repository of my Blog App built using the MERN Stack. Below, you will find everything you need to know about the project, the tech stack and how to get started.
 
@@ -16,8 +15,6 @@
 - Image storage managed with cloudinary
 - SPA via React Router.
 - Robuste state management using redux and redux toolkit + Redux persist.
-
----
 
 ## 🛠️ Tech Stack
 
@@ -42,7 +39,6 @@
 - Cloudinary: For efficient image and profile pictures storage.
 - Firebase for oAuth.
 
----
 
 ## 🚀 Getting Started
 
@@ -90,7 +86,6 @@ VITE_CLOUDINARY_cloudName
 http://localhost:5173
 ```
 
----
 
 ## 🤝 Contributing
 

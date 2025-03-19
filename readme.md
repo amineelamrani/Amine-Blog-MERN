@@ -1,7 +1,6 @@
 # Amine Blog Project
 
-
-## Welcome to the repository of my Blog App built using the MERN Stack. Below, you will find everything you need to know about the project, the tech stack and how to get started.
+Welcome to the repository of my Blog App built using the MERN Stack. Below, you will find everything you need to know about the project, the tech stack and how to get started.
 
 ## 🌟 Features
 

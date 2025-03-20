@@ -19,6 +19,7 @@ import ReadArticle from "./pages/articlePages/ReadArticle";
 import createWhite from "/create-article-white.svg";
 import createBlack from "/create-article-black.svg";
 import AdminDashboard from "./pages/adminPages/AdminDashboard";
+import PageTitle from "./components/utils/PageTitle";
 
 export default function App() {
   const { theme, currentUser } = useSelector((state) => state.user);
@@ -65,7 +66,15 @@ export default function App() {
 
         <Header />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <PageTitle title={"Amine's Code Chronicles | Welcome"} />
+                <Home />
+              </>
+            }
+          />
           <Route path="/article/read/:articleId" element={<ReadArticle />} />
 
           <Route element={<ProtectedRoutes />}>
@@ -74,20 +83,95 @@ export default function App() {
 
           <Route element={<AdminRestricted />}>
             <Route path="article">
-              <Route path="create" element={<CreateArticle />}></Route>
+              <Route
+                path="create"
+                element={
+                  <>
+                    <PageTitle
+                      title={"Create New Article | Amine's Code Chronicles"}
+                    />
+                    <CreateArticle />
+                  </>
+                }
+              ></Route>
             </Route>
-            <Route path="/admin/dashboard" element={<AdminDashboard />}></Route>
+            <Route
+              path="/admin/dashboard"
+              element={
+                <>
+                  <PageTitle title={"DashBoard | Amine's Code Chronicles"} />
+                  <AdminDashboard />
+                </>
+              }
+            ></Route>
           </Route>
 
-          <Route path="/about" element={<About />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:email" element={<ResetPassword />} />
+          <Route
+            path="/about"
+            element={
+              <>
+                <PageTitle title={"About Page | Amine's Code Chronicles"} />
+                <About />
+              </>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <>
+                <PageTitle title={"Search | Amine's Code Chronicles"} />
+                <Search />
+              </>
+            }
+          />
+          <Route
+            path="/sign-in"
+            element={
+              <>
+                <PageTitle title={"Sign In | Amine's Code Chronicles"} />
+                <SignIn />
+              </>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <>
+                <PageTitle title={"Sign Up | Amine's Code Chronicles"} />
+                <SignUp />
+              </>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <>
+                <PageTitle
+                  title={"Forgot Password | Amine's Code Chronicles"}
+                />
+                <ForgotPassword />
+              </>
+            }
+          />
+          <Route
+            path="/reset-password/:email"
+            element={
+              <>
+                <PageTitle title={"Password Reset | Amine's Code Chronicles"} />
+                <ResetPassword />
+              </>
+            }
+          />
           <Route
             path="/account-confirmation/:email"
-            element={<ConfirmAccount />}
+            element={
+              <>
+                <PageTitle
+                  title={"Account Confirmation | Amine's Code Chronicles"}
+                />
+                <ConfirmAccount />
+              </>
+            }
           />
         </Routes>
       </div>

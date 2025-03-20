@@ -4,6 +4,7 @@ import { changeProfilePicture, signOut } from "../redux/user/userSlice";
 import ConfirmButtonCheck from "../components/svgComponents/ConfirmButtonCheck";
 import { useEffect, useState } from "react";
 import ActionConfirmation from "../components/ActionConfirmation";
+import PageTitle from "../components/utils/PageTitle";
 
 // in the profile route => I will have
 // [signOut - delete account - Update name - update profile picture (delete the existing one) - Update Password - possibility to go to admin dashboard if admin on it ]
@@ -137,6 +138,7 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col w-full items-center py-14 gap-3">
+      <PageTitle title={"Profile Page | Amine's Code Chronicles"} />
       {error.error && (
         <div className="toast z-50">
           <div className="alert alert-error">

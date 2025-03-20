@@ -5,6 +5,7 @@ import ArticleCommentsSections from "../../components/ArticleCommentsSections";
 import { useSelector } from "react-redux";
 import ArticleAuthorSection from "../../components/ArticleAuthorSection";
 import RecentArticlesSection from "../../components/RecentArticlesSection";
+import PageTitle from "../../components/utils/PageTitle";
 
 export default function ReadArticle() {
   const [articleData, setArticleData] = useState(null);
@@ -69,6 +70,11 @@ export default function ReadArticle() {
 
   return (
     <div className="container">
+      <PageTitle
+        title={`${
+          articleData ? articleData.title : "Loading..."
+        } | Amine's Code Chronicles`}
+      />
       {!articleData && (
         <div className="flex w-full justify-center">
           <span className="loading loading-spinner loading-lg"></span>

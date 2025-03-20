@@ -6,14 +6,14 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 require("dotenv").config();
 
-app.use(express.static(path.join(__dirname, "../client/dist")));
-
 const userRouter = require("./routes/userRoutes");
 const articleRouter = require("./routes/articleRoutes");
 const commentRouter = require("./routes/commentRoutes");
 
 // Start express App
 const app = express();
+
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // Database connexion
 const DB = process.env.DB_URL.replace("<db_password>", process.env.DB_PASSWORD);

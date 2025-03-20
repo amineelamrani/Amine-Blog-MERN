@@ -3,7 +3,10 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 require("dotenv").config();
+
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
 const userRouter = require("./routes/userRoutes");
 const articleRouter = require("./routes/articleRoutes");
@@ -30,6 +33,11 @@ app.use(express.json());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/articles", articleRouter);
 app.use("/api/v1/comments", commentRouter);
+
+app.get("*", (req, res) => {
+  // res.sendFile(path.join(__dirname, "./../client/dist/index.html"));
+  res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
+});
 
 // Server Starting
 const port = process.env.PORT;

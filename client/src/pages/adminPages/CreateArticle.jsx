@@ -56,6 +56,13 @@ export default function CreateArticle() {
     );
     // if uploaded successfully => Send article infos to the server
     if (imageUrl) {
+      // Here modify the imageUrl and make it like
+      // This : http://res.cloudinary.com/dntdxqzsw/image/upload/w_1000/q_35/f_auto/v1740853223/articlesAssets/n8cezvj1wh9qui4isekm.png
+      // instead of this : http://res.cloudinary.com/dntdxqzsw/image/upload/v1742738864/articlesAssets/d70ai9g63dkx3fxs3248.jpg
+      const newImageUrl = imageUrl.replace(
+        "upload",
+        "upload/w_1000/q_35/f_auto"
+      );
       dispatch(startUploadArticle("Uploading article data to the server..."));
       // setError({ error: false, message: "" });
       // setIsLoading({
@@ -71,7 +78,7 @@ export default function CreateArticle() {
         content: inputData.content,
         summary: inputData.summary,
         category: cat,
-        image: imageUrl,
+        image: newImageUrl,
       });
       // console.log(articleCreate);
       if (articleCreate && articleCreate.status === "success") {
@@ -100,17 +107,19 @@ export default function CreateArticle() {
   const handleUploadCloudinary = async (cloudName, uploadPreset, file) => {
     const formData = new FormData();
     formData.append("file", file);
+    // formData.append("transformation", "w_1000");==> This needs a signed upload which necessitate to add a new endpoint in the server for the signature it needs to be secured
     formData.append("upload_preset", uploadPreset);
     formData.append("folder", "articlesAssets");
     try {
       const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload/`,
         {
           method: "POST",
           body: formData,
         }
       );
       const data = await res.json();
+      // console.log(data);
       return data.url;
     } catch (err) {
       return null;

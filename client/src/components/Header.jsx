@@ -23,7 +23,7 @@ export default function Header() {
             alt="icon-blog"
             className="w-8"
           />
-          <h1 className="text-xs md:text-base ">
+          <h1 className="text-xs md:text-base hidden sm:flex">
             Amine&apos;s Co
             <samp className="font-bold italic">de Chronicles</samp>
           </h1>
@@ -46,7 +46,7 @@ export default function Header() {
               </button>
             </Link>
             <Link to="/sign-up">
-              <button className="btn btn-sm px-5 btn-primary text-xs md:text-base">
+              <button className="btn btn-sm px-5 btn-primary text-xs md:text-base hidden sm:flex">
                 Sign up
               </button>
             </Link>

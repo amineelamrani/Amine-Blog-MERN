@@ -15,6 +15,18 @@ Welcome to the repository of my Blog App built using the MERN Stack. Below, you 
 - SPA via React Router.
 - Robuste state management using redux and redux toolkit + Redux persist.
 
+## 🛠️ Process  
+Building this MERN Blog was an exciting journey, and I approached it with a systematic and organized mindset (thanks to my background as a Systems Engineer in the automotive industry). Here's how I brought this project to life, step by step:  
+1. Requirements and planning
+- Top-to-Bottom Approach: I started by defining the requirements, deciding on features, and then moved to the implementation phase.
+- Brainstorming : I used Excalidraw to map out the project’s features, steps and features plan, data modeling for the backend (embedding, referencing, ...) and tech stacks selections .... (see the excalidraw extract below).  
+![Project-Brainstorm Overview](https://github.com/user-attachments/assets/dd132f0e-c74e-44dc-afc4-1b5896185019)
+2. Design
+I created the design prototypes using Figma to ensure a clean, user-friendly interface.
+3. Project Management
+I used Notion App to plan and track the project’s progress, breaking it down into tasks, milestones, and deadlines.
+![Notion app](https://github.com/user-attachments/assets/109895eb-d617-4230-bc7b-7e3854cf9f10)
+
 ## 🛠️ Tech Stack
 
 ### Front end:

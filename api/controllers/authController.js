@@ -18,7 +18,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   req.userId = id;
-
   next();
 });
 

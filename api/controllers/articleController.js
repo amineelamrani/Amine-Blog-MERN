@@ -122,6 +122,7 @@ exports.addArticleLike = catchAsync(async (req, res, next) => {
   // when liking
   // in the User model    => add the articleId to the array of likedArticles
   const likingUser = await User.findById(req.userId);
+
   if (likingUser.likedArticles.includes(articleId)) {
     return res.status(403).json({
       status: "fail",
@@ -133,7 +134,9 @@ exports.addArticleLike = catchAsync(async (req, res, next) => {
 
   // in the Article model => add +1 to the timesLiked item
   likedArticle.timesLiked++;
-
+  if (!likingUser.confirmPassword) {
+    likingUser.confirmPassword = likingUser.password;
+  }
   await likingUser.save();
   await likedArticle.save();
 

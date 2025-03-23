@@ -59,9 +59,9 @@ Follow these steps to set up the project locally:
 ### Prerequisites
 
 - Node.js (v16 or higher)
-- MongoDB (local or cloud-based)
+- MongoDB
 - A Cloudinary account (for file uploads)
-- A Firebase account (for deployment)
+- A Firebase account (for OAuth)
 
 ### Installation
 

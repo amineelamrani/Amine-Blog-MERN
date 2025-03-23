@@ -64,11 +64,11 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex flex-col py-14 items-center gap-5 min-w-96 mx-auto w-fit">
+    <div className="flex flex-col py-14 items-center gap-5 w-full md:min-w-96 mx-auto md:w-fit">
       <div className="flex flex-col items-center gap-3 p-10 border border-neutral">
         {error.error && <WarningComponent text={error.message} />}
-        <h1 className="text-3xl ">Amine&apos;s Code Chronicles</h1>
-        <p className="text-center">
+        <h1 className="text-xl md:text-3xl ">Amine&apos;s Code Chronicles</h1>
+        <p className="text-center text-xs md:text-base">
           Unlock the Future of Tech - Dive into Amine&apos;s Code Chronicles and
           <br />
           Elevate Your Programming Journey!

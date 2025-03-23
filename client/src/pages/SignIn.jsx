@@ -61,7 +61,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex flex-col py-14 items-center gap-5 min-w-96 mx-auto w-fit">
+    <div className="flex flex-col py-14 items-center gap-5 w-full md:min-w-96 mx-auto md:w-fit">
       <div className="flex flex-col items-center gap-3 p-10 border border-neutral">
         {error.error && <WarningComponent text={error.message} />}
         <h1 className="text-3xl ">Amine&apos;s Code Chronicles</h1>

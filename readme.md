@@ -27,6 +27,8 @@ I created the design prototypes using Figma to ensure a clean, user-friendly int
 I used Notion App to plan and track the project’s progress, breaking it down into tasks, milestones, and deadlines.
 ![Notion app](https://github.com/user-attachments/assets/109895eb-d617-4230-bc7b-7e3854cf9f10)
 
+> P.s.: This project took longer than expected because I was working full-time as a Systems Engineer. There were times when I had to work in the office, which limited the time I could dedicate to programming. This experience has inspired me to create a better action plan for organizing my time and energy when working in the office, so I can dedicate more time to projects like this, Insha'Allah. 💪
+
 ## 🛠️ Tech Stack
 
 ### Front end:

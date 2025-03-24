@@ -57,10 +57,10 @@ export default function Home() {
         <div className="flex flex-col container mx-auto w-full">
           <div
             id="search-section"
-            className="prose lg:prose-xl py-10 flex flex-col items-center mx-auto "
+            className="prose lg:prose-xl py-10 flex flex-col items-center mx-auto"
           >
             <h3>Welcome to My Blog</h3>
-            <h1 className="">Amine&apos;s Code Chronicles</h1>
+            <h1 className="text-center">Amine&apos;s Code Chronicles</h1>
             <p className="text-center pb-3">
               Here you&apos;ll find a variety of articles and tutorials on
               topics such as web development, software engineering, and

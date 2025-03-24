@@ -76,7 +76,10 @@ export default function ArticleAuthorSection({
                 className="w-5 h-5 md:w-8 md:h-8"
               />
             )}
-            <button className="btn" onClick={handleCopyText}>
+            <button
+              className="btn btn-tiny md:btn-base"
+              onClick={handleCopyText}
+            >
               <CopySvgComponent theme={theme} />
               Copy link
             </button>

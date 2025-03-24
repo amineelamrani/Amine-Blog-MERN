@@ -144,7 +144,7 @@ export default function ReadArticle() {
             </div>
           </div>
 
-          <div id="article-content" className=" prose max-w-none py-10">
+          <div id="article-content" className="prose max-w-full py-10">
             {/* Now I have a content as a markdown and need to translate it to html */}
             <Markdown>{articleData.content}</Markdown>
           </div>

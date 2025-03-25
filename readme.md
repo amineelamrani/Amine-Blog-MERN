@@ -1,6 +1,7 @@
 # Amine Blog Project
 
 Welcome to the repository of my Blog App built using the MERN Stack. Below, you will find everything you need to know about the project, the tech stack and how to get started.
+Link : https://acceptable-rani-ensam-5fda811f.koyeb.app/
 
 ## 🌟 Features
 
@@ -25,7 +26,7 @@ Building this MERN Blog was an exciting journey, and I approached it with a syst
 I created the design prototypes using Figma to ensure a clean, user-friendly interface.
 3. Project Management
 I used Notion App to plan and track the project’s progress, breaking it down into tasks, milestones, and deadlines.
-![Notion app](https://github.com/user-attachments/assets/109895eb-d617-4230-bc7b-7e3854cf9f10)
+![Notion app](https://github.com/user-attachments/assets/faa90a24-98d3-49ca-a987-198275d022ef)
 
 > P.s.: This project took longer than expected because I was working full-time as a Systems Engineer. There were times when I had to work in the office, which limited the time I could dedicate to programming. This experience has inspired me to create a better action plan for organizing my time and energy when working in the office, so I can dedicate more time to projects like this, Insha'Allah. 💪
 

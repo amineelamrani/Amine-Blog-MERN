@@ -1,7 +1,7 @@
 # Amine Blog Project
 
 Welcome to the repository of my Blog App built using the MERN Stack. Below, you will find everything you need to know about the project, the tech stack and how to get started.
-Link : https://blogreact.am1ne.xyz/
+Link : https://blogreact.am1ne.xyz/. 
 (X) not working: https://acceptable-rani-ensam-5fda811f.koyeb.app/
 
 ## 🌟 Features
